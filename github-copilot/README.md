@@ -2,8 +2,8 @@
 
 This repository contains captured API requests and responses from GitHub Copilot's different chat modes in VS Code, revealing the system prompts, tools, and architectures used.
 
-**Model:** GPT-4.1 (Proxy)
-**Captured:** November 23, 2025
+**Model:** GPT-4.1\
+**Captured:** November 23, 2025\
 **Test Task:** "Create calculator in Python, make sure it works, and write README"
 
 ---
@@ -58,7 +58,7 @@ This repository contains captured API requests and responses from GitHub Copilot
 - Refuses if files not specified: "Please add the files to be modified to the working set"
 
 **Output Format:**
-```markdown
+`````markdown
 ### /path/to/file.py
 
 Summary of changes.
@@ -69,7 +69,7 @@ Summary of changes.
 { changed code }
 # ...existing code...
 ````
-```
+`````
 
 **Files:** [`edit/`](edit/)
 
