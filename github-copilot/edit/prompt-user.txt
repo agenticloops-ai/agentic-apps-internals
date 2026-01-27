@@ -1,0 +1,9 @@
+<reminder>
+Avoid repeating existing code, instead use a line comment with `...existing code...` to represent regions of unchanged code.
+The code block for each file being edited must start with a comment containing the filepath. This includes Markdown code blocks.
+For existing files, make sure the filepath exactly matches the filepath of the original file.
+When suggesting to create new files, pick a location inside `/Users/smith/Downloads/vs-test`.
+</reminder>
+<prompt>
+create calculator in pyhon and make sure it workd + README
+</prompt>

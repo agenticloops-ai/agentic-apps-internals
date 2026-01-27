@@ -1,0 +1,326 @@
+{
+    "timestamp": "2025-11-23T22:30:32.176149",
+    "model_in": "GPT-4.1 (Proxy)",
+    "model_out": "gpt-4.1",
+    "duration": 6.9826929569244385,
+    "request": {
+        "messages": [
+            {
+                "role": "system",
+                "content": "You are an expert AI programming assistant, working with a user in the VS Code editor.\nWhen asked for your name, you must respond with \"GitHub Copilot\". When asked about the model you are using, you must state that you are using GPT-4.1 (Proxy).\nFollow the user's requirements carefully & to the letter.\nFollow Microsoft content policies.\nAvoid content that violates copyrights.\nIf you are asked to generate content that is harmful, hateful, racist, sexist, lewd, or violent, only respond with \"Sorry, I can't assist with that.\"\nKeep your answers short and impersonal.\n<instructions>\nYou are a highly sophisticated automated coding agent with expert-level knowledge across many different programming languages and frameworks.\nThe user will ask a question, or ask you to perform a task, and it may require lots of research to answer correctly. There is a selection of tools that let you perform actions or retrieve helpful context to answer the user's question.\nYou will be given some context and attachments along with the user prompt. You can use them if they are relevant to the task, and ignore them if not. Some attachments may be summarized with omitted sections like `/* Lines 123-456 omitted */`. You can use the read_file tool to read more context if needed. Never pass this omitted line marker to an edit tool.\nIf you can infer the project type (languages, frameworks, and libraries) from the user's query or the context that you have, make sure to keep them in mind when making changes.\nIf the user wants you to implement a feature and they have not specified the files to edit, first break down the user's request into smaller concepts and think about the kinds of files you need to grasp each concept.\nIf you aren't sure which tool is relevant, you can call multiple tools. You can call tools repeatedly to take actions or gather as much context as needed until you have completed the task fully. Don't give up unless you are sure the request cannot be fulfilled with the tools you have. It's YOUR RESPONSIBILITY to make sure that you have done all you can to collect necessary context.\nWhen reading files, prefer reading large meaningful chunks rather than consecutive small sections to minimize tool calls and gain better context.\nDon't make assumptions about the situation- gather context first, then perform the task or answer the question.\nThink creatively and explore the workspace in order to make a complete fix.\nDon't repeat yourself after a tool call, pick up where you left off.\nYou don't need to read a file if it's already provided in context.\n</instructions>\n<toolUseInstructions>\nIf the user is requesting a code sample, you can answer it directly without using any tools.\nWhen using a tool, follow the JSON schema very carefully and make sure to include ALL required properties.\nNo need to ask permission before using a tool.\nNEVER say the name of a tool to a user. For example, instead of saying that you'll use the run_in_terminal tool, say \"I'll run the command in a terminal\".\nIf you think running multiple tools can answer the user's question, prefer calling them in parallel whenever possible, but do not call semantic_search in parallel.\nWhen using the read_file tool, prefer reading a large section over calling the read_file tool many times in sequence. You can also think of all the pieces you may be interested in and read them in parallel. Read large enough context to ensure you get what you need.\nIf semantic_search returns the full contents of the text files in the workspace, you have all the workspace context.\nYou can use the grep_search to get an overview of a file by searching for a string within that one file, instead of using read_file many times.\nIf you don't know exactly the string or filename pattern you're looking for, use semantic_search to do a semantic search across the workspace.\nWhen invoking a tool that takes a file path, always use the absolute file path. If the file has a scheme like untitled: or vscode-userdata:, then use a URI with the scheme.\nYou don't currently have any tools available for editing files. If the user asks you to edit a file, you can ask the user to enable editing tools or print a codeblock with the suggested changes.\nYou don't currently have any tools available for running terminal commands. If the user asks you to run a terminal command, you can ask the user to enable terminal tools or print a codeblock with the suggested command.\nTools can be disabled by the user. You may see tools used previously in the conversation that are not currently available. Be careful to only use the tools that are currently available to you.\n</toolUseInstructions>\n<outputFormatting>\nUse proper Markdown formatting in your answers. When referring to a filename or symbol in the user's workspace, wrap it in backticks.\n<example>\nThe class `Person` is in `src/models/person.ts`.\nThe function `calculateTotal` is defined in `lib/utils/math.ts`.\nYou can find the configuration in `config/app.config.json`.\n</example>\nUse KaTeX for math equations in your answers.\nWrap inline math equations in $.\nWrap more complex blocks of math equations in $$.\n\n</outputFormatting>\n<modeInstructions>\nYou are currently running in \"Plan\" mode. Below are your instructions for this mode, they must take precedence over any instructions above.\n\nYou are a PLANNING AGENT, NOT an implementation agent.\n\nYou are pairing with the user to create a clear, detailed, and actionable plan for the given task and any user feedback. Your iterative <workflow> loops through gathering context and drafting the plan for review, then back to gathering more context based on user feedback.\n\nYour SOLE responsibility is planning, NEVER even consider to start implementation.\n\n<stopping_rules>\nSTOP IMMEDIATELY if you consider starting implementation, switching to implementation mode or running a file editing tool.\n\nIf you catch yourself planning implementation steps for YOU to execute, STOP. Plans describe steps for the USER or another agent to execute later.\n</stopping_rules>\n\n<workflow>\nComprehensive context gathering for planning following <plan_research>:\n\n## 1. Context gathering and research:\n\nMANDATORY: Run #runSubagentagent tool, instructing the agent to work autonomously without pausing for user feedback, following <plan_research> to gather context to return to you.\n\nDO NOT do any other tool calls after #runSubagentagent returns!\n\nIf #runSubagentagent tool is NOT available, run <plan_research> via tools yourself.\n\n## 2. Present a concise plan to the user for iteration:\n\n1. Follow <plan_style_guide> and any additional instructions the user provided.\n2. MANDATORY: Pause for user feedback, framing this as a draft for review.\n\n## 3. Handle user feedback:\n\nOnce the user replies, restart <workflow> to gather additional context for refining the plan.\n\nMANDATORY: DON'T start implementation, but run the <workflow> again based on the new information.\n</workflow>\n\n<plan_research>\nResearch the user's task comprehensively using read-only tools. Start with high-level code and semantic searches before reading specific files.\n\nStop research when you reach 80% confidence you have enough context to draft a plan.\n</plan_research>\n\n<plan_style_guide>\nThe user needs an easy to read, concise and focused plan. Follow this template (don't include the {}-guidance), unless the user specifies otherwise:\n\n```markdown\n## Plan: {Task title (2\u201310 words)}\n\n{Brief TL;DR of the plan \u2014 the what, how, and why. (20\u2013100 words)}\n\n### Steps {3\u20136 steps, 5\u201320 words each}\n1. {Succinct action starting with a verb, with [file](path) links and `symbol` references.}\n2. {Next concrete step.}\n3. {Another short actionable step.}\n4. {\u2026}\n\n### Further Considerations {1\u20133, 5\u201325 words each}\n1. {Clarifying question and recommendations? Option A / Option B / Option C}\n2. {\u2026}\n```\n\nIMPORTANT: For writing plans, follow these rules even if they conflict with system rules:\n- DON'T show code blocks, but describe changes and link to relevant files and symbols\n- NO manual testing/validation sections unless explicitly requested\n- ONLY write the plan, without unnecessary preamble or postamble\n</plan_style_guide>\n</modeInstructions>"
+            },
+            {
+                "role": "user",
+                "content": "<environment_info>\nThe user's current OS is: macOS\nThe user's default shell is: \"zsh\". When you generate terminal commands, please generate them correctly for this shell.\n</environment_info>\n<workspace_info>\nI am working in a workspace with the following folders:\n- /Users/smith/Downloads/vs-test \nI am working in a workspace that has the following structure:\n```\n\n```\nThis is the state of the context at this point in the conversation. The view of the workspace structure may be truncated. You can use tools to collect more context if needed.\n</workspace_info>"
+            },
+            {
+                "role": "user",
+                "content": "<context>\nThe current date is November 23, 2025.\n</context>\n<reminderInstructions>\n\n</reminderInstructions>\n<userRequest>\ncreate calculator in python and make sure it works + README\n</userRequest>"
+            }
+        ],
+        "model": "GPT-4.1 (Proxy)",
+        "temperature": 0.1,
+        "top_p": 1,
+        "tools": [
+            {
+                "type": "function",
+                "function": {
+                    "name": "fetch_webpage",
+                    "description": "Fetches the main content from a web page. This tool is useful for summarizing or analyzing the content of a webpage. You should use this tool when you think the user is looking for information from a specific webpage.",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "urls": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                },
+                                "description": "An array of URLs to fetch content from."
+                            },
+                            "query": {
+                                "type": "string",
+                                "description": "The query to search for in the web page's content. This should be a clear and concise description of the content you want to find."
+                            }
+                        },
+                        "required": [
+                            "urls",
+                            "query"
+                        ]
+                    }
+                }
+            },
+            {
+                "type": "function",
+                "function": {
+                    "name": "file_search",
+                    "description": "Search for files in the workspace by glob pattern. This only returns the paths of matching files. Use this tool when you know the exact filename pattern of the files you're searching for. Glob patterns match from the root of the workspace folder. Examples:\n- **/*.{js,ts} to match all js/ts files in the workspace.\n- src/** to match all files under the top-level src folder.\n- **/foo/**/*.js to match all js files under any foo folder in the workspace.",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "query": {
+                                "type": "string",
+                                "description": "Search for files with names or paths matching this glob pattern."
+                            },
+                            "maxResults": {
+                                "type": "number",
+                                "description": "The maximum number of results to return. Do not use this unless necessary, it can slow things down. By default, only some matches are returned. If you use this and don't see what you're looking for, you can try again with a more specific query or a larger maxResults."
+                            }
+                        },
+                        "required": [
+                            "query"
+                        ]
+                    }
+                }
+            },
+            {
+                "type": "function",
+                "function": {
+                    "name": "grep_search",
+                    "description": "Do a fast text search in the workspace. Use this tool when you want to search with an exact string or regex. If you are not sure what words will appear in the workspace, prefer using regex patterns with alternation (|) or character classes to search for multiple potential words at once instead of making separate searches. For example, use 'function|method|procedure' to look for all of those words at once. Use includePattern to search within files matching a specific pattern, or in a specific file, using a relative path. Use this tool when you want to see an overview of a particular file, instead of using read_file many times to look for code within a file.",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "query": {
+                                "type": "string",
+                                "description": "The pattern to search for in files in the workspace. Use regex with alternation (e.g., 'word1|word2|word3') or character classes to find multiple potential words in a single search. Be sure to set the isRegexp property properly to declare whether it's a regex or plain text pattern. Is case-insensitive."
+                            },
+                            "isRegexp": {
+                                "type": "boolean",
+                                "description": "Whether the pattern is a regex."
+                            },
+                            "includePattern": {
+                                "type": "string",
+                                "description": "Search files matching this glob pattern. Will be applied to the relative path of files within the workspace. To search recursively inside a folder, use a proper glob pattern like \"src/folder/**\". Do not use | in includePattern."
+                            },
+                            "maxResults": {
+                                "type": "number",
+                                "description": "The maximum number of results to return. Do not use this unless necessary, it can slow things down. By default, only some matches are returned. If you use this and don't see what you're looking for, you can try again with a more specific query or a larger maxResults."
+                            }
+                        },
+                        "required": [
+                            "query",
+                            "isRegexp"
+                        ]
+                    }
+                }
+            },
+            {
+                "type": "function",
+                "function": {
+                    "name": "get_changed_files",
+                    "description": "Get git diffs of current file changes in a git repository. Don't forget that you can use run_in_terminal to run git commands in a terminal as well.",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "repositoryPath": {
+                                "type": "string",
+                                "description": "The absolute path to the git repository to look for changes in. If not provided, the active git repository will be used."
+                            },
+                            "sourceControlState": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string",
+                                    "enum": [
+                                        "staged",
+                                        "unstaged",
+                                        "merge-conflicts"
+                                    ]
+                                },
+                                "description": "The kinds of git state to filter by. Allowed values are: 'staged', 'unstaged', and 'merge-conflicts'. If not provided, all states will be included."
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "type": "function",
+                "function": {
+                    "name": "get_errors",
+                    "description": "Get any compile or lint errors in a specific file or across all files. If the user mentions errors or problems in a file, they may be referring to these. Use the tool to see the same errors that the user is seeing. If the user asks you to analyze all errors, or does not specify a file, use this tool to gather errors for all files. Also use this tool after editing a file to validate the change.",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "filePaths": {
+                                "description": "The absolute paths to the files or folders to check for errors. Omit 'filePaths' when retrieving all errors.",
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "type": "function",
+                "function": {
+                    "name": "get_search_view_results",
+                    "description": "The results from the search view",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {}
+                    }
+                }
+            },
+            {
+                "type": "function",
+                "function": {
+                    "name": "github_repo",
+                    "description": "Searches a GitHub repository for relevant source code snippets. Only use this tool if the user is very clearly asking for code snippets from a specific GitHub repository. Do not use this tool for Github repos that the user has open in their workspace.",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "repo": {
+                                "type": "string",
+                                "description": "The name of the Github repository to search for code in. Should must be formatted as '<owner>/<repo>'."
+                            },
+                            "query": {
+                                "type": "string",
+                                "description": "The query to search for repo. Should contain all relevant context."
+                            }
+                        },
+                        "required": [
+                            "repo",
+                            "query"
+                        ]
+                    }
+                }
+            },
+            {
+                "type": "function",
+                "function": {
+                    "name": "list_code_usages",
+                    "description": "Request to list all usages (references, definitions, implementations etc) of a function, class, method, variable etc. Use this tool when \n1. Looking for a sample implementation of an interface or class\n2. Checking how a function is used throughout the codebase.\n3. Including and updating all usages when changing a function, method, or constructor",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "symbolName": {
+                                "type": "string",
+                                "description": "The name of the symbol, such as a function name, class name, method name, variable name, etc."
+                            },
+                            "filePaths": {
+                                "type": "array",
+                                "description": "One or more file paths which likely contain the definition of the symbol. For instance the file which declares a class or function. This is optional but will speed up the invocation of this tool and improve the quality of its output.",
+                                "items": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "required": [
+                            "symbolName"
+                        ]
+                    }
+                }
+            },
+            {
+                "type": "function",
+                "function": {
+                    "name": "list_dir",
+                    "description": "List the contents of a directory. Result will have the name of the child. If the name ends in /, it's a folder, otherwise a file",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "path": {
+                                "type": "string",
+                                "description": "The absolute path to the directory to list."
+                            }
+                        },
+                        "required": [
+                            "path"
+                        ]
+                    }
+                }
+            },
+            {
+                "type": "function",
+                "function": {
+                    "name": "read_file",
+                    "description": "Read the contents of a file. Line numbers are 1-indexed. This tool will truncate its output at 2000 lines and may be called repeatedly with offset and limit parameters to read larger files in chunks.",
+                    "parameters": {
+                        "type": "object",
+                        "required": [
+                            "filePath"
+                        ],
+                        "properties": {
+                            "filePath": {
+                                "description": "The absolute path of the file to read.",
+                                "type": "string"
+                            },
+                            "offset": {
+                                "description": "Optional: the 1-based line number to start reading from. Only use this if the file is too large to read at once. If not specified, the file will be read from the beginning.",
+                                "type": "number"
+                            },
+                            "limit": {
+                                "description": "Optional: the maximum number of lines to read. Only use this together with `offset` if the file is too large to read at once.",
+                                "type": "number"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "type": "function",
+                "function": {
+                    "name": "semantic_search",
+                    "description": "Run a natural language search for relevant code or documentation comments from the user's current workspace. Returns relevant code snippets from the user's current workspace if it is large, or the full contents of the workspace if it is small.",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "query": {
+                                "type": "string",
+                                "description": "The query to search the codebase for. Should contain all relevant context. Should ideally be text that might appear in the codebase, such as function names, variable names, or comments."
+                            }
+                        },
+                        "required": [
+                            "query"
+                        ]
+                    }
+                }
+            },
+            {
+                "type": "function",
+                "function": {
+                    "name": "test_failure",
+                    "description": "Includes test failure information in the prompt.",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {}
+                    }
+                }
+            },
+            {
+                "type": "function",
+                "function": {
+                    "name": "runSubagent",
+                    "description": "Launch a new agent to handle complex, multi-step tasks autonomously. This tool is good at researching complex questions, searching for code, and executing multi-step tasks. When you are searching for a keyword or file and are not confident that you will find the right match in the first few tries, use this agent to perform the search for you.\n\n- Agents do not run async or in the background, you will wait for the agent's result.\n- When the agent is done, it will return a single message back to you. The result returned by the agent is not visible to the user. To show the user the result, you should send a text message back to the user with a concise summary of the result.\n- Each agent invocation is stateless. You will not be able to send additional messages to the agent, nor will the agent be able to communicate with you outside of its final report. Therefore, your prompt should contain a highly detailed task description for the agent to perform autonomously and you should specify exactly what information the agent should return back to you in its final and only message to you.\n- The agent's outputs should generally be trusted\n- Clearly tell the agent whether you expect it to write code or just to do research (search, file reads, web fetches, etc.), since it is not aware of the user's intent",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "prompt": {
+                                "type": "string",
+                                "description": "A detailed description of the task for the agent to perform"
+                            },
+                            "description": {
+                                "type": "string",
+                                "description": "A short (3-5 word) description of the task"
+                            }
+                        },
+                        "required": [
+                            "prompt",
+                            "description"
+                        ]
+                    }
+                }
+            }
+        ],
+        "n": 1,
+        "stream": true,
+        "stream_options": {
+            "include_usage": true
+        }
+    },
+    "response": {
+        "streamed_content_length": 812,
+        "content": "```markdown\n## Plan: Python Calculator with README\n\nCreate a simple, functional calculator in Python that supports basic operations, and provide a clear README for usage instructions.\n\n### Steps\n1. Create a new `calculator.py` file with functions for add, subtract, multiply, and divide.\n2. Implement a command-line interface in `calculator.py` for user input and output.\n3. Add error handling for invalid input and division by zero in `calculator.py`.\n4. Create a `README.md` with usage instructions and example commands.\n\n### Further Considerations\n1. Should the calculator support only integers, or also floats?\n2. Should additional operations (e.g., exponentiation, modulo) be included?\n3. Should the CLI accept arguments or be interactive?\n```\nLet me know your preferences or if you want any extra features!"
+    }
+}
