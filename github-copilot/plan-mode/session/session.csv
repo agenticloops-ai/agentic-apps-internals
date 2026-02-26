@@ -1,0 +1,40 @@
+timestamp,provider,model,duration_ms,ttft_ms,status,stop_reason,input_tokens,output_tokens,total_tokens,cost_usd,is_streaming,has_tools,has_thinking,preview_text
+2026-02-26T07:47:39.924594,github-copilot,gpt-4o-mini-2024-07-18,431.83422088623047,313.9383792877197,success,end_turn,205,11,216,3.735e-05,True,False,False,"Please write a brief title for the following request:
+
+Create a plan to implement minimal agentic loop in Python using Anthropic API with a run bash tool and human confirmation before executing script"
+2026-02-26T07:47:46.157399,github-copilot,gpt-5.3-codex,6642.868995666504,2229.297876358032,success,end_turn,8484,383,8867,0.02504,True,True,True,"<environment_info>
+The user's current OS is: macOS
+</environment_info>
+<workspace_info>
+I am working in a workspace with the following folders:
+- /Users/alx/Development/agenticloops-ai/agentlens/sampl"
+2026-02-26T07:47:49.196230,github-copilot,gpt-5.3-codex,2712.394952774048,1137.0549201965332,success,end_turn,7132,114,7246,0.01897,True,True,False,"<environment_info>
+The user's current OS is: macOS
+</environment_info>
+<workspace_info>
+I am working in a workspace with the following folders:
+- /Users/alx/Development/agenticloops-ai/agentlens/sampl"
+2026-02-26T07:47:54.801613,github-copilot,gpt-5.3-codex,5485.39924621582,3303.124189376831,success,end_turn,7272,295,7567,0.02113,True,True,True,"<environment_info>
+The user's current OS is: macOS
+</environment_info>
+<workspace_info>
+I am working in a workspace with the following folders:
+- /Users/alx/Development/agenticloops-ai/agentlens/sampl"
+2026-02-26T07:48:52.221070,github-copilot,gpt-5.3-codex,17365.44394493103,10320.167064666748,success,end_turn,7643,882,8525,0.0279275,True,True,True,"<environment_info>
+The user's current OS is: macOS
+</environment_info>
+<workspace_info>
+I am working in a workspace with the following folders:
+- /Users/alx/Development/agenticloops-ai/agentlens/sampl"
+2026-02-26T07:49:00.593051,github-copilot,gpt-5.3-codex,8340.049028396606,1620.5089092254639,success,end_turn,9292,437,9729,0.0276,True,True,True,"<environment_info>
+The user's current OS is: macOS
+</environment_info>
+<workspace_info>
+I am working in a workspace with the following folders:
+- /Users/alx/Development/agenticloops-ai/agentlens/sampl"
+2026-02-26T07:50:19.465954,github-copilot,gpt-5.3-codex,19993.05295944214,8441.144943237305,success,end_turn,9833,1007,10840,0.0346525,True,True,True,"<environment_info>
+The user's current OS is: macOS
+</environment_info>
+<workspace_info>
+I am working in a workspace with the following folders:
+- /Users/alx/Development/agenticloops-ai/agentlens/sampl"

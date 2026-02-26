@@ -1,459 +1,258 @@
-# System Prompt Engineering: Lessons from GitHub Copilot
+# Prompt Engineering Analysis: GitHub Copilot
 
-An analysis of system prompt architecture, building blocks, and best practices extracted from GitHub Copilot's four chat modes.
+## Overview
 
----
+| Mode | Model | Words | Characters | Lines | XML Tags | MD Headers | Bullets | Tables |
+|------|-------|-------|-----------|-------|----------|-----------|---------|--------|
+| agent | gpt-4o-mini-2024-07-18 (overhead) | 126 | 746 | 12 | 0 | 0 | 5 | 0 |
+| agent | gpt-5.3-codex | 3,881 | 24,584 | 335 | 17 | 2 | 123 | 0 |
+| agent | gpt-4o-mini (overhead) | 157 | 933 | 13 | 0 | 0 | 0 | 0 |
+| ask | gpt-4o-mini-2024-07-18 (overhead) | 807 | 4,946 | 20 | 0 | 0 | 0 | 18 |
+| ask | gpt-4o-mini-2024-07-18 (overhead) | 126 | 746 | 12 | 0 | 0 | 5 | 0 |
+| ask | gpt-5.3-codex | 479 | 2,824 | 50 | 0 | 0 | 17 | 0 |
+| plan | gpt-4o-mini-2024-07-18 (overhead) | 126 | 746 | 12 | 0 | 0 | 5 | 0 |
+| plan | gpt-5.3-codex | 3,744 | 24,325 | 389 | 23 | 7 | 146 | 0 |
 
-## Table of Contents
-1. [Prompt Architecture Overview](#prompt-architecture-overview)
-2. [Building Blocks](#building-blocks)
-3. [Best Practices](#best-practices)
-4. [Anti-Patterns to Avoid](#anti-patterns-to-avoid)
-5. [Mode-Specific Techniques](#mode-specific-techniques)
-6. [Practical Templates](#practical-templates)
+## Agent Mode
 
----
+### Overhead Prompt — gpt-4o-mini-2024-07-18
 
-## Prompt Architecture Overview
-
-### Layered Structure
-
-GitHub Copilot uses a **layered prompt architecture** where each layer adds specificity:
+**Purpose:** Categorization/titling/warmup  
+**Length:** 126 words  
 
 ```
-┌─────────────────────────────────────────┐
-│  Layer 1: Identity & Policies           │  ← Shared across all modes
-├─────────────────────────────────────────┤
-│  Layer 2: Core Instructions             │  ← Mode-specific behavior
-├─────────────────────────────────────────┤
-│  Layer 3: Tool Instructions             │  ← How to use tools
-├─────────────────────────────────────────┤
-│  Layer 4: Format Instructions           │  ← Output formatting
-├─────────────────────────────────────────┤
-│  Layer 5: Mode Override                 │  ← Final authority (Plan mode)
-└─────────────────────────────────────────┘
+You are an expert in crafting pithy titles for chatbot conversations. You are presented with a chat request, and you reply with a brief title that captures the main topic of that request.
+Follow Microsoft content policies.
+Avoid content that violates copyrights.
+If you are asked to generate content that is harmful, hateful, racist, sexist, lewd, or violent, only respond with "Sorry, I can't assist with that."
+Keep your answers short and impersonal.
+The title should not be wrapped in quotes. It s
+[...truncated — see system-prompt.md for full text]
 ```
 
-### XML Tag Organization
+### Main Prompt — gpt-5.3-codex
 
-All prompts use XML-style tags to organize sections:
-- `<instructions>` - Core behavioral rules
-- `<toolUseInstructions>` - Tool-specific guidance
-- `<outputFormatting>` - Response format rules
-- `<modeInstructions>` - Mode-specific overrides
-- `<example>` - Concrete examples
+**Length:** 3,881 words (24,584 characters)  
 
-**Why XML tags?** They create clear boundaries that the model can parse, and allow sections to reference each other (e.g., "follow `<plan_style_guide>`").
+**Structure:**
 
----
+- XML tags: 17 — uses XML for structured sections
+- Markdown headers: 2 — organized with `#` headings
+- Bullet points: 123
+- Numbered items: 25
 
-## Building Blocks
+**Key Sections Identified:**
 
-### 1. Identity Block
+- Persona
+- Safety
+- Tool Instructions
+- Formatting
+- Context Injection
+- Constraints
+- Examples
+- Code Style
 
-**Purpose:** Establish who the agent is and handle identity questions.
+<details>
+<summary>Prompt excerpt (first 1000 chars of 24,584)</summary>
+
+```
+You are an expert AI programming assistant, working with a user in the VS Code editor.
+Your name is GitHub Copilot. When asked about the model you are using, state that you are using GPT-5.3-Codex.
+Follow Microsoft content policies.
+Avoid content that violates copyrights.
+If you are asked to generate content that is harmful, hateful, racist, sexist, lewd, or violent, only respond with "Sorry, I can't assist with that."
+<coding_agent_instructions>
+You are a coding agent running in VS Code. You are expected to be precise, safe, and helpful.
+
+Your capabilities:
+
+- Receive user prompts and other context provided by the workspace, such as files in the environment.
+- Communicate with the user by streaming thinking & responses, and by making & updating plans.
+- Emit function calls to run terminal commands and apply patches.
+</coding_agent_instructions>
+<personality>
+Your default personality and tone is concise, direct, and friendly. You communicate efficiently, always keeping the user clearly
+
+[...truncated — see system-prompt.md for full text]
+```
+
+</details>
+
+### Overhead Prompt — gpt-4o-mini
+
+**Purpose:** Categorization/titling/warmup  
+**Length:** 157 words  
+
+```
+Follow Microsoft content policies.
+Avoid content that violates copyrights.
+If you are asked to generate content that is harmful, hateful, racist, sexist, lewd, or violent, only respond with "Sorry, I can't assist with that."
+Keep your answers short and impersonal.
+Use Markdown formatting in your answers.
+Make sure to include the programming language name at the start of the Markdown code blocks.
+Avoid wrapping the whole response in triple backticks.
+Use KaTeX for math equations in your answers.
+
+[...truncated — see system-prompt.md for full text]
+```
+
+## Ask Mode
+
+### Overhead Prompt — gpt-4o-mini-2024-07-18
+
+**Purpose:** Categorization/titling/warmup  
+**Length:** 807 words  
+
+```
+You are a helpful AI programming assistant to a user who is a software engineer, acting on behalf of the Visual Studio Code editor. Your task is to choose one category from the Markdown table of categories below that matches the user's question. Carefully review the user's question, any previous messages, and any provided context such as code snippets. Respond with just the category name. Your chosen category will help Visual Studio Code provide the user with a higher-quality response, and choos
+[...truncated — see system-prompt.md for full text]
+```
+
+### Overhead Prompt — gpt-4o-mini-2024-07-18
+
+**Purpose:** Categorization/titling/warmup  
+**Length:** 126 words  
+
+```
+You are an expert in crafting pithy titles for chatbot conversations. You are presented with a chat request, and you reply with a brief title that captures the main topic of that request.
+Follow Microsoft content policies.
+Avoid content that violates copyrights.
+If you are asked to generate content that is harmful, hateful, racist, sexist, lewd, or violent, only respond with "Sorry, I can't assist with that."
+Keep your answers short and impersonal.
+The title should not be wrapped in quotes. It s
+[...truncated — see system-prompt.md for full text]
+```
+
+### Main Prompt — gpt-5.3-codex
+
+**Length:** 479 words (2,824 characters)  
+
+**Structure:**
+
+- Bullet points: 17
+- Code blocks: 1
+
+**Key Sections Identified:**
+
+- Persona
+- Formatting
+- Context Injection
+- Constraints
+
+<details>
+<summary>Prompt excerpt (first 1000 chars of 2,824)</summary>
 
 ```
 You are an AI programming assistant.
-When asked for your name, you must respond with "GitHub Copilot".
-When asked about the model you are using, you must state that you are using GPT-4.1 (Proxy).
-```
-
-**Best Practices:**
-- Be explicit about identity to prevent confusion
-- Handle "what model are you?" questions proactively
-- Use consistent identity across all modes
-
-### 2. Policy Block
-
-**Purpose:** Safety guardrails and content restrictions.
-
-```
+When asked for your name, you must respond with "GitHub Copilot". When asked about the model you are using, you must state that you are using GPT-5.3-Codex.
 Follow the user's requirements carefully & to the letter.
 Follow Microsoft content policies.
 Avoid content that violates copyrights.
 If you are asked to generate content that is harmful, hateful, racist, sexist, lewd, or violent, only respond with "Sorry, I can't assist with that."
-```
-
-**Best Practices:**
-- Place early in prompt (high priority)
-- Provide exact refusal phrase for consistency
-- Keep policies concise but comprehensive
-
-### 3. Behavioral Directives
-
-**Purpose:** Define how the agent should act.
-
-```
 Keep your answers short and impersonal.
-Don't make assumptions about the situation- gather context first, then perform the task.
-Think creatively and explore the workspace in order to make a complete fix.
-Don't repeat yourself after a tool call, pick up where you left off.
-```
-
-**Directive Types:**
-| Type | Example | Purpose |
-|------|---------|---------|
-| **Positive** | "Think creatively and explore" | Encourage desired behavior |
-| **Negative** | "Don't make assumptions" | Prevent common mistakes |
-| **Conditional** | "If you aren't sure, call multiple tools" | Handle edge cases |
-
-### 4. Responsibility Assignment
-
-**Purpose:** Make ownership explicit.
-
-```
-It's YOUR RESPONSIBILITY to make sure that you have done all you can to collect necessary context.
-```
-
-**Why it works:** Explicitly assigning responsibility prevents the model from giving up too early or deferring to the user unnecessarily.
-
-### 5. Tool Usage Rules
-
-**Purpose:** Guide efficient and correct tool use.
-
-```xml
-<toolUseInstructions>
-No need to ask permission before using a tool.
-NEVER say the name of a tool to a user. For example, instead of saying that you'll
-use the run_in_terminal tool, say "I'll run the command in a terminal".
-If you think running multiple tools can answer the user's question, prefer calling
-them in parallel whenever possible, but do not call semantic_search in parallel.
-Don't call the run_in_terminal tool multiple times in parallel. Instead, run one
-command and wait for the output before running the next command.
-</toolUseInstructions>
-```
-
-**Key Patterns:**
-- **Permission bypass:** "No need to ask permission" - reduces latency
-- **Abstraction:** Hide tool names from users for better UX
-- **Parallelization rules:** Explicit guidance on what can/can't run in parallel
-- **Sequential requirements:** Some tools must run sequentially (terminal)
-
-### 6. Output Format Specification
-
-**Purpose:** Ensure consistent, parseable output.
-
-```xml
-<outputFormatting>
-Use proper Markdown formatting in your answers.
-When referring to a filename or symbol in the user's workspace, wrap it in backticks.
-<example>
-The class `Person` is in `src/models/person.ts`.
-The function `calculateTotal` is defined in `lib/utils/math.ts`.
-</example>
-</outputFormatting>
-```
-
-**Best Practices:**
-- Provide concrete examples
-- Specify exact syntax (4 backticks, filepath comments)
-- Explain *why* (e.g., "so IDE can parse and apply")
-
-### 7. Error Handling & Limits
-
-**Purpose:** Prevent infinite loops and handle failures gracefully.
-
-```
-Do not loop more than 3 times attempting to fix errors in the same file.
-If the third try fails, you should stop and ask the user what to do next.
-```
-
-**Why it matters:** Without explicit limits, agents can get stuck in retry loops. The "3 tries then ask" pattern is effective.
-
-### 8. Context Efficiency Rules
-
-**Purpose:** Minimize token usage and API calls.
-
-```
-When reading files, prefer reading large meaningful chunks rather than consecutive
-small sections to minimize tool calls and gain better context.
-You don't need to read a file if it's already provided in context.
-You can use the grep_search to get an overview of a file by searching for a string
-within that one file, instead of using read_file many times.
-```
-
-**Optimization Strategies:**
-- Batch reads over sequential reads
-- Check context before fetching
-- Use search before full read
-
----
-
-## Best Practices
-
-### 1. Use NEVER for Hard Rules
-
-```
-NEVER print out a codeblock with file changes unless the user asked for it.
-NEVER say the name of a tool to a user.
-NEVER try to edit a file by running terminal commands unless the user specifically asks for it.
-```
-
-**Why:** Capitalized NEVER creates strong constraints that the model rarely violates.
-
-### 2. Provide Escape Hatches
-
-```
-If the user asks you to edit a file, you can ask the user to enable editing tools
-or print a codeblock with the suggested changes.
-```
-
-**Why:** When tools aren't available, the agent needs a fallback behavior rather than failing.
-
-### 3. Use Hierarchical Overrides
-
-Plan mode demonstrates this pattern:
-
-```
-You are currently running in "Plan" mode. Below are your instructions for this mode,
-they must take precedence over any instructions above.
-```
-
-**Why:** Allows mode-specific behavior while reusing base prompts.
-
-### 4. Define Stop Conditions
-
-```xml
-<stopping_rules>
-STOP IMMEDIATELY if you consider starting implementation, switching to implementation
-mode or running a file editing tool.
-
-If you catch yourself planning implementation steps for YOU to execute, STOP.
-Plans describe steps for the USER or another agent to execute later.
-</stopping_rules>
-```
-
-**Why:** Explicit stop conditions prevent mode drift and scope creep.
-
-### 5. Include Worked Examples
-
-```xml
-<example>
-### /Users/someone/proj01/example.ts
-
-Add a new property 'age' and a new method 'getAge' to the class Person.
-
-````typescript
-// filepath: /Users/someone/proj01/example.ts
-class Person {
-	// ...existing code...
-	age: number;
-	// ...existing code...
-	getAge() {
-		return this.age;
-	}
-}
-````
-</example>
-```
-
-**Why:** Examples are more effective than descriptions for format specification.
-
-### 6. Quantify When Possible
-
-```
-Stop research when you reach 80% confidence you have enough context to draft a plan.
-3-6 steps, 5-20 words each
-1-3 Further Considerations, 5-25 words each
-```
-
-**Why:** Specific numbers constrain output better than vague terms like "a few" or "brief".
-
----
-
-## Anti-Patterns to Avoid
-
-### ❌ Vague Instructions
-```
-# Bad
-Try to be helpful and complete tasks.
-
-# Good
-It's YOUR RESPONSIBILITY to make sure that you have done all you can to collect
-necessary context. Don't give up unless you are sure the request cannot be fulfilled.
-```
-
-### ❌ Missing Fallbacks
-```
-# Bad
-Use the apply_patch tool to edit files.
-
-# Good
-Use the apply_patch tool to edit files. If you have issues with it, you should
-first try to fix your patch and continue using apply_patch.
-```
-
-### ❌ Unlimited Retries
-```
-# Bad
-Keep trying until the error is fixed.
-
-# Good
-Do not loop more than 3 times attempting to fix errors. If the third try fails,
-stop and ask the user what to do next.
-```
-
-### ❌ Ambiguous Tool Selection
-```
-# Bad
-Use the appropriate tool.
-
-# Good
-If you don't know exactly the string or filename pattern you're looking for,
-use semantic_search. You can use grep_search to get an overview of a file by
-searching for a string within that one file, instead of using read_file many times.
-```
-
----
-
-## Mode-Specific Techniques
-
-### Ask Mode: Capability Listing
-```
-You can answer general programming questions and perform the following tasks:
+You can answer general programming questions and perform the following tasks: 
 * Ask a question about the files in your current workspace
 * Explain how the code in your active editor works
+* Make changes to existing code
+* Review the selected code in your active editor
 * Generate unit tests for the selected code
-...
-```
-**Why:** Helps the model understand its scope without tools.
+* Propose a fix for the problems in the selected code
+* Scaffold code for a new file or project in a workspace
+* Create a new Jupyter Notebook
+* Ask questions about VS C
 
-### Edit Mode: Refusal Pattern
-```
-If you need to change existing files and it's not clear which files should be changed,
-then refuse and answer with "Please add the files to be modified to the working set,
-or use `#codebase` in your request to automatically discover working set files."
-```
-**Why:** Explicit refusal text ensures consistent UX.
-
-### Plan Mode: Workflow Definition
-```xml
-<workflow>
-## 1. Context gathering and research:
-MANDATORY: Run #runSubagent tool...
-
-## 2. Present a concise plan to the user for iteration:
-MANDATORY: Pause for user feedback...
-
-## 3. Handle user feedback:
-MANDATORY: DON'T start implementation...
-</workflow>
-```
-**Why:** Step-by-step workflow prevents the agent from skipping phases.
-
-### Agent Mode: Patch Format Specification
-```
-*** Begin Patch
-*** Update File: /path/to/file.py
-@@ class BaseClass
-@@   def method():
-[3 lines of pre-context]
--[old_code]
-+[new_code]
-[3 lines of post-context]
-*** End Patch
-```
-**Why:** Custom diff format that's unambiguous and parseable by the IDE.
-
----
-
-## Practical Templates
-
-### Template 1: Basic Agent
-
-```xml
-You are [IDENTITY] that helps users with [DOMAIN].
-
-<policies>
-[Safety rules and content restrictions]
-</policies>
-
-<instructions>
-[Core behavioral directives]
-- Positive: what to do
-- Negative: what not to do
-- Conditional: how to handle edge cases
-</instructions>
-
-<tool_use>
-[Tool-specific guidance]
-- When to use each tool
-- Parallelization rules
-- Error handling
-</tool_use>
-
-<output_format>
-[Format specification with examples]
-</output_format>
+[...truncated — see system-prompt.md for full text]
 ```
 
-### Template 2: Multi-Mode Agent
+</details>
 
-```xml
-[Base prompt - shared across modes]
+## Plan Mode
 
-<mode_instructions>
-You are currently running in "[MODE_NAME]" mode.
-These instructions take precedence over any instructions above.
+### Overhead Prompt — gpt-4o-mini-2024-07-18
 
-<stopping_rules>
-[Mode boundaries - when to stop/refuse]
-</stopping_rules>
+**Purpose:** Categorization/titling/warmup  
+**Length:** 126 words  
 
-<workflow>
-[Step-by-step process for this mode]
-</workflow>
-
-<style_guide>
-[Output format specific to this mode]
-</style_guide>
-</mode_instructions>
+```
+You are an expert in crafting pithy titles for chatbot conversations. You are presented with a chat request, and you reply with a brief title that captures the main topic of that request.
+Follow Microsoft content policies.
+Avoid content that violates copyrights.
+If you are asked to generate content that is harmful, hateful, racist, sexist, lewd, or violent, only respond with "Sorry, I can't assist with that."
+Keep your answers short and impersonal.
+The title should not be wrapped in quotes. It s
+[...truncated — see system-prompt.md for full text]
 ```
 
-### Template 3: Tool Usage Block
+### Main Prompt — gpt-5.3-codex
 
-```xml
-<tool_use_instructions>
-No need to ask permission before using a tool.
+**Length:** 3,744 words (24,325 characters)  
 
-[Tool selection guidance]
-- If [condition], use [tool_a]
-- If [other_condition], use [tool_b]
+**Structure:**
 
-[Parallelization rules]
-- These tools CAN run in parallel: [list]
-- These tools MUST run sequentially: [list]
+- XML tags: 23 — uses XML for structured sections
+- Markdown headers: 7 — organized with `#` headings
+- Bullet points: 146
+- Numbered items: 28
+- Code blocks: 1
 
-[Error handling]
-- If [error], try [recovery]
-- After [N] failures, [fallback action]
+**Key Sections Identified:**
 
-[Efficiency rules]
-- Prefer [efficient pattern] over [inefficient pattern]
-- Don't [wasteful action] if [alternative exists]
-</tool_use_instructions>
+- Persona
+- Safety
+- Tool Instructions
+- Formatting
+- Context Injection
+- Constraints
+- Examples
+- Code Style
+
+<details>
+<summary>Prompt excerpt (first 1000 chars of 24,325)</summary>
+
+```
+You are an expert AI programming assistant, working with a user in the VS Code editor.
+Your name is GitHub Copilot. When asked about the model you are using, state that you are using GPT-5.3-Codex.
+Follow Microsoft content policies.
+Avoid content that violates copyrights.
+If you are asked to generate content that is harmful, hateful, racist, sexist, lewd, or violent, only respond with "Sorry, I can't assist with that."
+<coding_agent_instructions>
+You are a coding agent running in VS Code. You are expected to be precise, safe, and helpful.
+
+Your capabilities:
+
+- Receive user prompts and other context provided by the workspace, such as files in the environment.
+- Communicate with the user by streaming thinking & responses, and by making & updating plans.
+- Emit function calls to run terminal commands and apply patches.
+</coding_agent_instructions>
+<personality>
+Your default personality and tone is concise, direct, and friendly. You communicate efficiently, always keeping the user clearly
+
+[...truncated — see system-prompt.md for full text]
 ```
 
----
+</details>
 
-## Key Takeaways
+## Mode Delta
 
-1. **Structure matters:** Use XML tags to organize prompts into clear sections
-2. **Be explicit:** Vague instructions lead to inconsistent behavior
-3. **Use NEVER:** Capitalized prohibitions are strongly followed
-4. **Provide examples:** Show, don't just tell
-5. **Set limits:** Retry counts, confidence thresholds, word counts
-6. **Define fallbacks:** What to do when the primary approach fails
-7. **Assign responsibility:** "It's YOUR responsibility" prevents giving up
-8. **Layer overrides:** Mode-specific instructions can override base behavior
-9. **Optimize for tokens:** Guide efficient tool use to minimize costs
-10. **Stop conditions:** Explicit boundaries prevent scope creep
+How the system prompt changes between modes for this agent:
 
----
+### Prompt Length
 
-## Further Reading
+- **agent:** 3,881 words (24,584 chars)
+- **ask:** 479 words (2,824 chars)
+- **plan:** 3,744 words (24,325 chars)
 
-- [Anthropic's Prompt Engineering Guide](https://docs.anthropic.com/claude/docs/prompt-engineering)
-- [OpenAI's Best Practices](https://platform.openai.com/docs/guides/prompt-engineering)
-- [Model Context Protocol (MCP)](https://modelcontextprotocol.io/)
+### Tool Count
+
+- **agent:** 65 tools
+- **ask:** 0 tools
+- **plan:** 22 tools
+
+### Tool Differences
+
+**Removed in ask (vs agent):** apply_patch, ask_questions, await_terminal, configure_non_python_notebook, configure_notebook, configure_python_environment, configure_python_notebook, container-tools_get-config, copilot_getNotebookSummary, create_and_run_task, create_directory, create_file, create_new_jupyter_notebook, create_new_workspace, edit_notebook_file, fetch_webpage, file_search, get-syntax-docs-mermaid, get_changed_files, get_errors, get_project_setup_info, get_python_environment_details, get_python_executable_details, get_search_view_results, get_terminal_output, get_vscode_api, github_repo, grep_search, install_extension, install_python_packages, kill_terminal, list_code_usages, list_dir, manage_todo_list, mcp_pylance_mcp_s_pylanceDocString, mcp_pylance_mcp_s_pylanceDocuments, mcp_pylance_mcp_s_pylanceFileSyntaxErrors, mcp_pylance_mcp_s_pylanceImports, mcp_pylance_mcp_s_pylanceInstalledTopLevelModules, mcp_pylance_mcp_s_pylanceInvokeRefactoring, mcp_pylance_mcp_s_pylancePythonEnvironments, mcp_pylance_mcp_s_pylanceRunCodeSnippet, mcp_pylance_mcp_s_pylanceSettings, mcp_pylance_mcp_s_pylanceSyntaxErrors, mcp_pylance_mcp_s_pylanceUpdatePythonEnvironment, mcp_pylance_mcp_s_pylanceWorkspaceRoots, mcp_pylance_mcp_s_pylanceWorkspaceUserFiles, mermaid-diagram-preview, mermaid-diagram-validator, notebook_install_packages, notebook_list_packages, open_simple_browser, read_file, read_notebook_cell_output, renderMermaidDiagram, restart_notebook_kernel, runSubagent, run_in_terminal, run_notebook_cell, run_vscode_command, semantic_search, terminal_last_command, terminal_selection, test_failure, vscode_searchExtensions_internal
+
+**Removed in plan (vs agent):** apply_patch, await_terminal, configure_notebook, configure_python_environment, container-tools_get-config, create_and_run_task, create_directory, create_file, create_new_jupyter_notebook, create_new_workspace, edit_notebook_file, get-syntax-docs-mermaid, get_project_setup_info, get_python_environment_details, get_python_executable_details, get_vscode_api, install_extension, install_python_packages, kill_terminal, manage_todo_list, mcp_pylance_mcp_s_pylanceDocString, mcp_pylance_mcp_s_pylanceDocuments, mcp_pylance_mcp_s_pylanceFileSyntaxErrors, mcp_pylance_mcp_s_pylanceImports, mcp_pylance_mcp_s_pylanceInstalledTopLevelModules, mcp_pylance_mcp_s_pylanceInvokeRefactoring, mcp_pylance_mcp_s_pylancePythonEnvironments, mcp_pylance_mcp_s_pylanceRunCodeSnippet, mcp_pylance_mcp_s_pylanceSettings, mcp_pylance_mcp_s_pylanceSyntaxErrors, mcp_pylance_mcp_s_pylanceUpdatePythonEnvironment, mcp_pylance_mcp_s_pylanceWorkspaceRoots, mcp_pylance_mcp_s_pylanceWorkspaceUserFiles, mermaid-diagram-preview, mermaid-diagram-validator, notebook_install_packages, notebook_list_packages, open_simple_browser, renderMermaidDiagram, run_in_terminal, run_notebook_cell, run_vscode_command, vscode_searchExtensions_internal
+
+**Added in plan (vs ask):** ask_questions, configure_non_python_notebook, configure_python_notebook, copilot_getNotebookSummary, fetch_webpage, file_search, get_changed_files, get_errors, get_search_view_results, get_terminal_output, github_repo, grep_search, list_code_usages, list_dir, read_file, read_notebook_cell_output, restart_notebook_kernel, runSubagent, semantic_search, terminal_last_command, terminal_selection, test_failure
+

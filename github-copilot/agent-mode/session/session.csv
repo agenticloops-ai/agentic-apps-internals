@@ -1,0 +1,64 @@
+timestamp,provider,model,duration_ms,ttft_ms,status,stop_reason,input_tokens,output_tokens,total_tokens,cost_usd,is_streaming,has_tools,has_thinking,preview_text
+2026-02-26T07:33:51.924518,github-copilot,gpt-4o-mini-2024-07-18,606.5390110015869,292.19913482666016,success,end_turn,210,11,221,3.8100000000000005e-05,True,False,False,"Please write a brief title for the following request:
+
+Implement minimal agentic loop in Python using Anthropic API with a run bash tool and human confirmation before executing scripts. Implement as a"
+2026-02-26T07:33:56.187989,github-copilot,gpt-5.3-codex,3932.0590496063232,1843.3120250701904,success,end_turn,16738,126,16864,0.043105,True,True,True,"<environment_info>
+The user's current OS is: macOS
+</environment_info>
+<workspace_info>
+I am working in a workspace with the following folders:
+- /Users/alx/Development/agenticloops-ai/agentlens/sampl"
+2026-02-26T07:34:11.499667,github-copilot,gpt-4o-mini,362.1490001678467,289.5240783691406,success,end_turn,1830,8,1838,0.0002793,True,False,False,"Summarize the following content in a SINGLE sentence (under 10 words) using past tense. Follow these rules strictly:
+
+			OUTPUT FORMAT:
+			- MUST be a single sentence
+			- MUST be under 10 words
+			- "
+2026-02-26T07:34:31.495263,github-copilot,gpt-5.3-codex,35237.00189590454,14857.481956481934,success,end_turn,16878,2459,19337,0.066785,True,True,True,"<environment_info>
+The user's current OS is: macOS
+</environment_info>
+<workspace_info>
+I am working in a workspace with the following folders:
+- /Users/alx/Development/agenticloops-ai/agentlens/sampl"
+2026-02-26T07:34:34.407723,github-copilot,gpt-4o-mini,555.7398796081543,310.0309371948242,success,end_turn,1840,9,1849,0.00028139999999999996,True,False,False,"Summarize the following content in a SINGLE sentence (under 10 words) using past tense. Follow these rules strictly:
+
+			OUTPUT FORMAT:
+			- MUST be a single sentence
+			- MUST be under 10 words
+			- "
+2026-02-26T07:34:34.583642,github-copilot,gpt-5.3-codex,2754.6310424804688,1893.3441638946533,success,end_turn,19376,137,19513,0.04981,True,True,True,"<environment_info>
+The user's current OS is: macOS
+</environment_info>
+<workspace_info>
+I am working in a workspace with the following folders:
+- /Users/alx/Development/agenticloops-ai/agentlens/sampl"
+2026-02-26T07:34:38.181122,github-copilot,gpt-4o-mini,422.67680168151855,290.9739017486572,success,end_turn,1836,8,1844,0.0002802,True,False,False,"Summarize the following content in a SINGLE sentence (under 10 words) using past tense. Follow these rules strictly:
+
+			OUTPUT FORMAT:
+			- MUST be a single sentence
+			- MUST be under 10 words
+			- "
+2026-02-26T07:34:40.889413,github-copilot,gpt-5.3-codex,6256.9310665130615,2995.708227157593,success,end_turn,19591,407,19998,0.0530475,True,True,True,"<environment_info>
+The user's current OS is: macOS
+</environment_info>
+<workspace_info>
+I am working in a workspace with the following folders:
+- /Users/alx/Development/agenticloops-ai/agentlens/sampl"
+2026-02-26T07:34:42.588008,github-copilot,gpt-5.3-codex,1486.361026763916,1227.712869644165,success,end_turn,20037,50,20087,0.0505925,True,True,False,"<environment_info>
+The user's current OS is: macOS
+</environment_info>
+<workspace_info>
+I am working in a workspace with the following folders:
+- /Users/alx/Development/agenticloops-ai/agentlens/sampl"
+2026-02-26T07:34:45.423179,github-copilot,gpt-4o-mini,381.7741870880127,289.26730155944824,success,end_turn,1838,8,1846,0.0002805,True,False,False,"Summarize the following content in a SINGLE sentence (under 10 words) using past tense. Follow these rules strictly:
+
+			OUTPUT FORMAT:
+			- MUST be a single sentence
+			- MUST be under 10 words
+			- "
+2026-02-26T07:34:47.419412,github-copilot,gpt-5.3-codex,4778.3520221710205,2369.1110610961914,success,end_turn,20130,256,20386,0.052885,True,True,False,"<environment_info>
+The user's current OS is: macOS
+</environment_info>
+<workspace_info>
+I am working in a workspace with the following folders:
+- /Users/alx/Development/agenticloops-ai/agentlens/sampl"

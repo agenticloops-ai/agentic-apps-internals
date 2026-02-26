@@ -1,0 +1,12 @@
+timestamp,provider,model,duration_ms,ttft_ms,status,stop_reason,input_tokens,output_tokens,total_tokens,cost_usd,is_streaming,has_tools,has_thinking,preview_text
+2026-02-26T07:18:11.219563,github-copilot,gpt-4o-mini-2024-07-18,368.2518005371094,278.04088592529297,success,end_turn,1006,2,1008,0.00015209999999999998,True,False,False,"What is the difference between ReAct and plan-and-execute as agentic
+design patterns? When would you choose one over the other?"
+2026-02-26T07:18:11.679231,github-copilot,gpt-4o-mini-2024-07-18,447.650671005249,267.183780670166,success,end_turn,206,11,217,3.75e-05,True,False,False,"Please write a brief title for the following request:
+
+What is the difference between ReAct and plan-and-execute as agentic
+design patterns? When would you choose one over the other?"
+2026-02-26T07:18:21.100716,github-copilot,gpt-5.3-codex,9850.7821559906,1450.458288192749,success,end_turn,654,451,1105,0.006145,True,False,False,"<prompt>
+What is the difference between ReAct and plan-and-execute as agentic
+design patterns? When would you choose one over the other?
+</prompt>
+"

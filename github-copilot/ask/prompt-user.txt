@@ -1,3 +1,0 @@
-<prompt>
-create calculator in python and make sure it works + README
-</prompt>
