@@ -1,0 +1,38 @@
+name: Bug Report / Factual Error
+description: Report a factual error, broken link, or data inconsistency
+labels: ["bug"]
+body:
+  - type: dropdown
+    id: agent
+    attributes:
+      label: Which agent does this affect?
+      options:
+        - Claude Code CLI
+        - Codex CLI
+        - GitHub Copilot
+        - Root README / Cross-agent
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: file
+    attributes:
+      label: File path
+      description: Which file contains the error?
+      placeholder: e.g., claude-code-cli/README.md
+    validations:
+      required: true
+  - type: textarea
+    id: current
+    attributes:
+      label: Current (incorrect) content
+      description: What does the file currently say?
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected (correct) content
+      description: What should it say instead? Include evidence if possible.
+    validations:
+      required: true

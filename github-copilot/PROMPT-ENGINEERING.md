@@ -17,8 +17,8 @@
 
 ### Overhead Prompt — gpt-4o-mini-2024-07-18
 
-**Purpose:** Categorization/titling/warmup  
-**Length:** 126 words  
+**Purpose:** Conversation titling
+**Length:** 126 words
 
 ```
 You are an expert in crafting pithy titles for chatbot conversations. You are presented with a chat request, and you reply with a brief title that captures the main topic of that request.
@@ -80,7 +80,7 @@ Your default personality and tone is concise, direct, and friendly. You communic
 
 ### Overhead Prompt — gpt-4o-mini
 
-**Purpose:** Categorization/titling/warmup  
+**Purpose:** Activity summarization
 **Length:** 157 words  
 
 ```
@@ -100,7 +100,7 @@ Use KaTeX for math equations in your answers.
 
 ### Overhead Prompt — gpt-4o-mini-2024-07-18
 
-**Purpose:** Categorization/titling/warmup  
+**Purpose:** Request categorization (18-category routing)
 **Length:** 807 words  
 
 ```
@@ -110,8 +110,8 @@ You are a helpful AI programming assistant to a user who is a software engineer,
 
 ### Overhead Prompt — gpt-4o-mini-2024-07-18
 
-**Purpose:** Categorization/titling/warmup  
-**Length:** 126 words  
+**Purpose:** Conversation titling
+**Length:** 126 words
 
 ```
 You are an expert in crafting pithy titles for chatbot conversations. You are presented with a chat request, and you reply with a brief title that captures the main topic of that request.
@@ -170,8 +170,8 @@ You can answer general programming questions and perform the following tasks:
 
 ### Overhead Prompt — gpt-4o-mini-2024-07-18
 
-**Purpose:** Categorization/titling/warmup  
-**Length:** 126 words  
+**Purpose:** Conversation titling
+**Length:** 126 words
 
 ```
 You are an expert in crafting pithy titles for chatbot conversations. You are presented with a chat request, and you reply with a brief title that captures the main topic of that request.

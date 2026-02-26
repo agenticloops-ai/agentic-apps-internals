@@ -1,5 +1,47 @@
 # Tool Catalog: Claude Code
 
+## Table of Contents
+
+- [Summary](#summary)
+- [Full Tool Catalog (agent mode — 24 tools)](#full-tool-catalog-agent-mode-24-tools)
+  - [File Read (3 tools)](#file-read-3-tools)
+    - [`Glob`](#glob)
+    - [`Grep`](#grep)
+    - [`Read`](#read)
+  - [File Write (3 tools)](#file-write-3-tools)
+    - [`Edit`](#edit)
+    - [`NotebookEdit`](#notebookedit)
+    - [`Write`](#write)
+  - [Shell (1 tools)](#shell-1-tools)
+    - [`Bash`](#bash)
+  - [Web (2 tools)](#web-2-tools)
+    - [`WebFetch`](#webfetch)
+    - [`WebSearch`](#websearch)
+  - [Planning (2 tools)](#planning-2-tools)
+    - [`EnterPlanMode`](#enterplanmode)
+    - [`ExitPlanMode`](#exitplanmode)
+  - [Questions (1 tools)](#questions-1-tools)
+    - [`AskUserQuestion`](#askuserquestion)
+  - [Multi Agent (10 tools)](#multi-agent-10-tools)
+    - [`SendMessage`](#sendmessage)
+    - [`Task`](#task)
+    - [`TaskCreate`](#taskcreate)
+    - [`TaskGet`](#taskget)
+    - [`TaskList`](#tasklist)
+    - [`TaskOutput`](#taskoutput)
+    - [`TaskStop`](#taskstop)
+    - [`TaskUpdate`](#taskupdate)
+    - [`TeamCreate`](#teamcreate)
+    - [`TeamDelete`](#teamdelete)
+  - [Misc (2 tools)](#misc-2-tools)
+    - [`EnterWorktree`](#enterworktree)
+    - [`Skill`](#skill)
+- [Mode Delta: Tool Changes](#mode-delta-tool-changes)
+  - [agent → plan](#agent-plan)
+- [Tool Invocation Patterns](#tool-invocation-patterns)
+  - [agent mode](#agent-mode)
+  - [plan mode](#plan-mode)
+
 ## Summary
 
 | Mode | Total | File Read | File Write | Shell | Web | Planning | Questions | Multi Agent | Misc |

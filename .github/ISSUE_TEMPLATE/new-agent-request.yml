@@ -1,0 +1,33 @@
+name: New Agent Request
+description: Request analysis of an AI coding agent not yet covered
+labels: ["enhancement", "new-agent"]
+body:
+  - type: input
+    id: agent-name
+    attributes:
+      label: Agent name
+      placeholder: e.g., Cursor, Windsurf, Cline
+    validations:
+      required: true
+  - type: dropdown
+    id: agent-type
+    attributes:
+      label: Agent type
+      options:
+        - CLI
+        - IDE Extension (VS Code)
+        - IDE (standalone)
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Additional details
+      description: Any relevant information — model used, modes available, notable features, etc.
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Are you willing to contribute the capture data?
+      options:
+        - label: Yes, I can run AgentLens and provide the captured session data

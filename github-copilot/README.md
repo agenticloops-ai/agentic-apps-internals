@@ -16,7 +16,7 @@
 
 **Multi-model pipeline:** Yes — uses gpt-4o-mini, gpt-4o-mini-2024-07-18, gpt-5.3-codex
 
-**Overhead requests:** 8 requests (9,039 tokens) for categorization/titling/warmup
+**Overhead requests:** 8 requests (9,039 tokens) — 5 in agent (1 titling + 4 activity summarization), 2 in ask (1 categorization + 1 titling), 1 in plan (1 titling)
 
 **Prompt caching:** Not observed
 

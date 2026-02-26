@@ -9,6 +9,9 @@ System prompts, tool architectures, session traces, and implementation patterns 
 [![Substack](https://img.shields.io/badge/Substack-Blogs_&_Newsletter-orange?style=for-the-badge&logo=substack&logoColor=white)](https://agenticloopsai.substack.com)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/company/agenticloops-ai)
 [![Follow @agenticloops_ai](https://img.shields.io/badge/Follow%20%40agenticloops__ai-black?style=for-the-badge&logo=x&logoColor=white)](https://x.com/agenticloops_ai)
+[![License: MIT](https://img.shields.io/github/license/agenticloops-ai/agentic-apps-internals?style=for-the-badge)](LICENSE)
+<!-- [![Stars](https://img.shields.io/github/stars/agenticloops-ai/agentic-apps-internals?style=for-the-badge)](https://github.com/agenticloops-ai/agentic-apps-internals/stargazers)
+[![Last Commit](https://img.shields.io/github/last-commit/agenticloops-ai/agentic-apps-internals?style=for-the-badge)](https://github.com/agenticloops-ai/agentic-apps-internals/commits/main) -->
 
 </div>
 
@@ -36,6 +39,19 @@ This repository contains captured API traffic, decoded system prompts, complete 
 - **Researchers** studying LLM agent architectures and prompt design
 - **Developers** learning advanced prompt engineering from production systems
 - **Anyone** curious about what happens behind `/ask`, `/agent`, or `/plan`
+
+---
+
+## 🗺️ Start Here
+
+New to the repo? Follow this reading path:
+
+1. **[Quick Comparison](#-quick-comparison)** — See how the three agents differ at a glance
+2. **Pick an agent** — Choose [Claude Code](claude-code-cli/), [Codex CLI](codex-cli/), or [Copilot](github-copilot/) and read its README
+3. **System Prompt** — Read the agent's `system-prompt.md` to see the exact instructions it receives
+4. **Prompt Engineering** — Read `PROMPT-ENGINEERING.md` for how the prompt is structured and how it changes between modes
+5. **Tool Catalog** — Browse `TOOL-USE.md` for the full tool definitions with JSON schemas
+6. **Session Traces** — Check `session.md` for turn-by-turn breakdowns of real agent sessions
 
 ---
 
@@ -98,12 +114,15 @@ All three agents analyzed here implement this exact pattern — but the *details
 | **Agent Mode Tools** | 24 | 5 | 65 |
 | **Plan Mode Tools** | 24 | 5 | 22 |
 | **Mode Restriction** | Same tools, prompt controls behavior | Same tools across modes | Removes write/execute tools |
-| **Overhead Requests** | 6 (warmup + titling) | 0 | 8 (categorization + titling) |
+| **Overhead Requests** | 6 — 4 agent (1 warmup + 3 file path extraction) + 2 plan (1 warmup + 1 file path extraction) | 0 | 8 — 5 agent (1 titling + 4 summarization) + 2 ask (1 categorization + 1 titling) + 1 plan (titling) |
+| **Agent Mode Cost** | $3.21 ¹ | $0.19 | $0.32 |
 | **Prompt Caching** | ✅ Heavy (~595K read tokens/session) | ❌ | ❌ |
 | **Sub-agents** | ✅ Task tool (5 types) | ❌ | ✅ runSubagent (1 type) |
 | **MCP Support** | Not in captured session | ❌ | ✅ (13 tools) |
 | **Edit Format** | String replacement (Edit tool) | Shell commands (exec_command) | V4A diff + 4-backtick blocks |
 | **System Prompt Structure** | Markdown with XML tags | Pure Markdown | XML-heavy with Markdown |
+
+> ¹ Claude Code's token counts in session metrics (74K) exclude ~595K cache_read and ~77K cache_creation tokens. Actual tokens processed per session are ~672K+, which is significantly higher than what the input/output columns show. Cost reflects the full cache-inclusive pricing.
 
 ---
 
@@ -113,11 +132,11 @@ These are patterns we found interesting while analyzing the captured sessions �
 
 1. **Same loop, different philosophies** — All three agents implement Reason-Act-Observe, but Codex CLI does it with 5 tools and a "just use the shell" philosophy, while Copilot provides 65 specialized tools for granular control. Claude sits in the middle with 24.
 
-2. **Mode restrictions reveal design thinking** — Claude Code keeps the same 24 tools in both Agent and Plan mode, controlling behavior purely through prompt instructions ("Plan mode is active... you MUST NOT make any edits"). Copilot takes the opposite approach: it physically removes write/execute tools in Plan mode (65 → 22), making unsafe actions structurally impossible.
+2. **Mode restrictions reveal design thinking** — Claude Code keeps the same 24 tools in both Agent and Plan mode, controlling behavior through runtime-injected `<system-reminder>` tags in conversation turns ("Plan mode is active... you MUST NOT make any edits") rather than the system prompt itself (which is identical across modes). Copilot takes the opposite approach: it physically removes write/execute tools in Plan mode (65 → 22), making unsafe actions structurally impossible.
 
 3. **Prompt caching is a major differentiator** — Claude Code reads ~595K cached tokens and creates ~77K cache tokens per session. This means the large system prompt and tool definitions are sent once and reused across turns. Neither Codex CLI nor Copilot show prompt caching in their captured sessions.
 
-4. **Multi-model pipelines hide overhead** — Both Claude Code and Copilot use cheaper models (claude-haiku, gpt-4o-mini) for routing tasks like title generation and request categorization before handing off to the main model. Codex CLI skips this entirely — zero overhead requests.
+4. **Multi-model pipelines hide overhead** — Claude Code uses claude-haiku for warmup/quota checks and extracting file paths from command outputs (not titling or categorization). Copilot uses gpt-4o-mini for titling and activity summarization in agent mode, with request categorization only in ask mode. Codex CLI skips this entirely — zero overhead requests.
 
 5. **System prompts encode engineering culture** — Codex CLI's prompt opens with explicit values ("Clarity, Pragmatism, Rigor"). Claude Code's prompt includes detailed anti-over-engineering rules ("Don't add features beyond what was asked. Three similar lines of code is better than a premature abstraction"). These aren't just instructions — they shape the agent's personality.
 
@@ -133,7 +152,7 @@ All data in this repository was captured using [**AgentLens**](https://github.co
 
 1. **Capture** — AgentLens sits between the agent and the LLM API, recording every request and response (system prompts, tool definitions, messages, token usage, timing)
 2. **Export** — Raw session data is exported as structured JSON with per-request breakdowns
-3. **Analyze** — A [Python script](tools/analyze.py) processes the JSON into structured markdown: per-agent READMEs, prompt engineering analysis, tool catalogs, and session traces
+3. **Analyze** — AgentLens exports are manually analyzed and processed into structured markdown: per-agent READMEs, prompt engineering analysis, tool catalogs, and session traces
 4. **Verify** — Tool counts, prompt completeness, and schema validity are spot-checked against the raw data
 
 > See [RESEARCH.md](RESEARCH.md) for the full methodology, deliverable structure, and analysis pipeline details.
@@ -166,7 +185,6 @@ All data in this repository was captured using [**AgentLens**](https://github.co
 │   └── plan-mode/
 │
 ├── tools/
-│   ├── analyze.py               # Analysis script (generates all markdown from JSON)
 │   └── lens-run.sh              # AgentLens capture launcher (tmux + proxy setup)
 │
 ├── RESEARCH.md         # Full research methodology

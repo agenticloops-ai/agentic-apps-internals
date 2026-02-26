@@ -1,5 +1,25 @@
 # Tool Catalog: Codex CLI
 
+## Table of Contents
+
+- [Summary](#summary)
+- [Full Tool Catalog (agent mode — 5 tools)](#full-tool-catalog-agent-mode-5-tools)
+  - [File Write (1 tools)](#file-write-1-tools)
+    - [`write_stdin`](#write_stdin)
+  - [Shell (1 tools)](#shell-1-tools)
+    - [`exec_command`](#exec_command)
+  - [Planning (1 tools)](#planning-1-tools)
+    - [`update_plan`](#update_plan)
+  - [Questions (1 tools)](#questions-1-tools)
+    - [`request_user_input`](#request_user_input)
+  - [Misc (1 tools)](#misc-1-tools)
+    - [`view_image`](#view_image)
+- [Mode Delta: Tool Changes](#mode-delta-tool-changes)
+  - [agent → plan](#agent-plan)
+- [Tool Invocation Patterns](#tool-invocation-patterns)
+  - [agent mode](#agent-mode)
+  - [plan mode](#plan-mode)
+
 ## Summary
 
 | Mode | Total | File Write | Shell | Planning | Questions | Misc |
