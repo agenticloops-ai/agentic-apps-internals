@@ -1,8 +1,10 @@
 # GitHub Copilot
 
 **Provider(s):** github-copilot  
-**Model(s):** gpt-4o-mini, gpt-4o-mini-2024-07-18, gpt-5.3-codex  
-**Modes Captured:** agent, ask, plan  
+**Model(s):** gpt-4o-mini, gpt-4o-mini-2024-07-18, gpt-5.3-codex (user-selected)
+**Modes Captured:** agent, ask, plan
+
+> **Note:** Copilot lets users choose their main model. This analysis uses gpt-5.3-codex, which was selected during capture. The overhead model (gpt-4o-mini) is not user-selectable.
 
 ## Session Metrics
 
