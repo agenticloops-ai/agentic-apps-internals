@@ -18,18 +18,18 @@ The approach is agent-agnostic. Any tool that makes LLM API calls through standa
 
 ### Using the Capture Script
 
-The [`tools/lens-run.sh`](tools/lens-run.sh) script automates the full capture workflow. It launches a tmux session with two panes: one running AgentLens in wait mode, the other running your agent command with proxy environment variables pre-configured.
+The [`.tools/lens-run.sh`](.tools/lens-run.sh) script automates the full capture workflow. It launches a tmux session with two panes: one running AgentLens in wait mode, the other running your agent command with proxy environment variables pre-configured.
 
 ```bash
 # Basic usage
-./tools/lens-run.sh -- <agent-command>
+./.tools/lens-run.sh -- <agent-command>
 
 # Examples
-./tools/lens-run.sh -- claude -p "your prompt here"
-./tools/lens-run.sh -- codex --model gpt-5.3-codex "your prompt here"
+./.tools/lens-run.sh -- claude -p "your prompt here"
+./.tools/lens-run.sh -- codex --model gpt-5.3-codex "your prompt here"
 
 # Custom output directory and session name
-./tools/lens-run.sh -o results/my-capture -s my-session -- <agent-command>
+./.tools/lens-run.sh -o results/my-capture -s my-session -- <agent-command>
 ```
 
 **What the script does:**
@@ -54,10 +54,10 @@ To analyze how an agent behaves in different modes, run a separate capture sessi
 
 ```bash
 # Agent mode
-./tools/lens-run.sh -o results/agent -s agent -- <agent-command> --mode agent "your prompt"
+./.tools/lens-run.sh -o results/agent -s agent -- <agent-command> --mode agent "your prompt"
 
 # Plan mode
-./tools/lens-run.sh -o results/plan -s plan -- <agent-command> --mode plan "your prompt"
+./.tools/lens-run.sh -o results/plan -s plan -- <agent-command> --mode plan "your prompt"
 ```
 
 The exact flags depend on the agent. The key is to use a prompt appropriate for the mode so you can observe how the agent handles that type of task.
