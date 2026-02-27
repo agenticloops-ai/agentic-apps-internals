@@ -91,7 +91,7 @@ All data in this repository was captured using [**AgentLens**](https://github.co
 Every AI coding agent in this repository follows the same fundamental loop — **Reason → Act → Observe**:
 
 <p align="center">
-  <img src="docs/agentic-loop.png" alt="Agentic Loop: Reason → Act → Observe" width="600">
+  <img src=".docs/agentic-loop.png" alt="Agentic Loop: Reason → Act → Observe" width="600">
 </p>
 
 1. **Reason** — The LLM receives the user's task plus conversation context. It decides what to do next and whether it needs to use a tool.

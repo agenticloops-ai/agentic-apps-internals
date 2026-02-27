@@ -34,7 +34,7 @@ The [`tools/lens-run.sh`](tools/lens-run.sh) script automates the full capture w
 
 **What the script does:**
 
-![lens-run.sh tmux session: left pane shows AgentLens proxy capturing API traffic, right pane shows Claude Code running a task](docs/lens-run-tmux.png)
+![lens-run.sh tmux session: left pane shows AgentLens proxy capturing API traffic, right pane shows Claude Code running a task](.docs/lens-run-tmux.png)
 
 1. Starts AgentLens in wait mode (`agentlens wait`), listening on `localhost:8080`
 2. Opens a second tmux pane with proxy environment variables set:
@@ -46,7 +46,7 @@ The [`tools/lens-run.sh`](tools/lens-run.sh) script automates the full capture w
 
 You can then explore the captured results in the AgentLens web UI — per-request breakdown with model, tokens, duration, cost, and latency charts:
 
-![AgentLens UI showing a Claude Code agent session with per-request details, token usage, and latency charts](docs/agentlens-ui.png)
+![AgentLens UI showing a Claude Code agent session with per-request details, token usage, and latency charts](.docs/agentlens-ui.png)
 
 ### Capture Per Mode
 
