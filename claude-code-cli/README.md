@@ -38,6 +38,8 @@
 - [Prompt Engineering Analysis](PROMPT-ENGINEERING.md)
 - [Tool Catalog](TOOL-USE.md)
 - [agent mode — System Prompt](agent-mode/system-prompt.md)
+- [agent mode — User Prompt](agent-mode/user-prompt.md)
 - [agent mode — Session Data](agent-mode/session.md)
 - [plan mode — System Prompt](plan-mode/system-prompt.md)
+- [plan mode — User Prompt](plan-mode/user-prompt.md)
 - [plan mode — Session Data](plan-mode/session.md)

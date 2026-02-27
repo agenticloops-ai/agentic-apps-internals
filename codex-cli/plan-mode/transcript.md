@@ -4,11 +4,15 @@
 **Ended:** 2026-02-26T08:31:14.905840  
 **Requests:** 2  
 **Tokens:** 23,469 (in: 21,312 / out: 2,157)  
-**Cost:** $0.0748  
 **Models:** gpt-5.3-codex  
 **Providers:** openai  
 
 ---
+
+## Table of Contents
+
+- [Request #1 — gpt-5.3-codex (openai)](#request-1)
+- [Request #2 — gpt-5.3-codex (openai)](#request-2)
 
 ## Request #1 — gpt-5.3-codex (openai) — 6.7s | thinking
 

@@ -110,18 +110,7 @@ You are a helpful AI programming assistant to a user who is a software engineer,
 
 ### Overhead Prompt — gpt-4o-mini-2024-07-18
 
-**Purpose:** Conversation titling
-**Length:** 126 words
-
-```
-You are an expert in crafting pithy titles for chatbot conversations. You are presented with a chat request, and you reply with a brief title that captures the main topic of that request.
-Follow Microsoft content policies.
-Avoid content that violates copyrights.
-If you are asked to generate content that is harmful, hateful, racist, sexist, lewd, or violent, only respond with "Sorry, I can't assist with that."
-Keep your answers short and impersonal.
-The title should not be wrapped in quotes. It s
-[...truncated — see system-prompt.md for full text]
-```
+**Purpose:** Conversation titling (same prompt as agent mode — see above)
 
 ### Main Prompt — gpt-5.3-codex
 
@@ -170,18 +159,7 @@ You can answer general programming questions and perform the following tasks:
 
 ### Overhead Prompt — gpt-4o-mini-2024-07-18
 
-**Purpose:** Conversation titling
-**Length:** 126 words
-
-```
-You are an expert in crafting pithy titles for chatbot conversations. You are presented with a chat request, and you reply with a brief title that captures the main topic of that request.
-Follow Microsoft content policies.
-Avoid content that violates copyrights.
-If you are asked to generate content that is harmful, hateful, racist, sexist, lewd, or violent, only respond with "Sorry, I can't assist with that."
-Keep your answers short and impersonal.
-The title should not be wrapped in quotes. It s
-[...truncated — see system-prompt.md for full text]
-```
+**Purpose:** Conversation titling (same prompt as agent mode — see above)
 
 ### Main Prompt — gpt-5.3-codex
 
@@ -250,9 +228,9 @@ How the system prompt changes between modes for this agent:
 
 ### Tool Differences
 
-**Removed in ask (vs agent):** apply_patch, ask_questions, await_terminal, configure_non_python_notebook, configure_notebook, configure_python_environment, configure_python_notebook, container-tools_get-config, copilot_getNotebookSummary, create_and_run_task, create_directory, create_file, create_new_jupyter_notebook, create_new_workspace, edit_notebook_file, fetch_webpage, file_search, get-syntax-docs-mermaid, get_changed_files, get_errors, get_project_setup_info, get_python_environment_details, get_python_executable_details, get_search_view_results, get_terminal_output, get_vscode_api, github_repo, grep_search, install_extension, install_python_packages, kill_terminal, list_code_usages, list_dir, manage_todo_list, mcp_pylance_mcp_s_pylanceDocString, mcp_pylance_mcp_s_pylanceDocuments, mcp_pylance_mcp_s_pylanceFileSyntaxErrors, mcp_pylance_mcp_s_pylanceImports, mcp_pylance_mcp_s_pylanceInstalledTopLevelModules, mcp_pylance_mcp_s_pylanceInvokeRefactoring, mcp_pylance_mcp_s_pylancePythonEnvironments, mcp_pylance_mcp_s_pylanceRunCodeSnippet, mcp_pylance_mcp_s_pylanceSettings, mcp_pylance_mcp_s_pylanceSyntaxErrors, mcp_pylance_mcp_s_pylanceUpdatePythonEnvironment, mcp_pylance_mcp_s_pylanceWorkspaceRoots, mcp_pylance_mcp_s_pylanceWorkspaceUserFiles, mermaid-diagram-preview, mermaid-diagram-validator, notebook_install_packages, notebook_list_packages, open_simple_browser, read_file, read_notebook_cell_output, renderMermaidDiagram, restart_notebook_kernel, runSubagent, run_in_terminal, run_notebook_cell, run_vscode_command, semantic_search, terminal_last_command, terminal_selection, test_failure, vscode_searchExtensions_internal
+**Removed in ask (vs agent):** `apply_patch`, `ask_questions`, `await_terminal`, `configure_non_python_notebook`, `configure_notebook`, `configure_python_environment`, `configure_python_notebook`, `container-tools_get-config`, `copilot_getNotebookSummary`, `create_and_run_task`, `create_directory`, `create_file`, `create_new_jupyter_notebook`, `create_new_workspace`, `edit_notebook_file`, `fetch_webpage`, `file_search`, `get-syntax-docs-mermaid`, `get_changed_files`, `get_errors`, `get_project_setup_info`, `get_python_environment_details`, `get_python_executable_details`, `get_search_view_results`, `get_terminal_output`, `get_vscode_api`, `github_repo`, `grep_search`, `install_extension`, `install_python_packages`, `kill_terminal`, `list_code_usages`, `list_dir`, `manage_todo_list`, `mcp_pylance_mcp_s_pylanceDocString`, `mcp_pylance_mcp_s_pylanceDocuments`, `mcp_pylance_mcp_s_pylanceFileSyntaxErrors`, `mcp_pylance_mcp_s_pylanceImports`, `mcp_pylance_mcp_s_pylanceInstalledTopLevelModules`, `mcp_pylance_mcp_s_pylanceInvokeRefactoring`, `mcp_pylance_mcp_s_pylancePythonEnvironments`, `mcp_pylance_mcp_s_pylanceRunCodeSnippet`, `mcp_pylance_mcp_s_pylanceSettings`, `mcp_pylance_mcp_s_pylanceSyntaxErrors`, `mcp_pylance_mcp_s_pylanceUpdatePythonEnvironment`, `mcp_pylance_mcp_s_pylanceWorkspaceRoots`, `mcp_pylance_mcp_s_pylanceWorkspaceUserFiles`, `mermaid-diagram-preview`, `mermaid-diagram-validator`, `notebook_install_packages`, `notebook_list_packages`, `open_simple_browser`, `read_file`, `read_notebook_cell_output`, `renderMermaidDiagram`, `restart_notebook_kernel`, `runSubagent`, `run_in_terminal`, `run_notebook_cell`, `run_vscode_command`, `semantic_search`, `terminal_last_command`, `terminal_selection`, `test_failure`, `vscode_searchExtensions_internal`
 
-**Removed in plan (vs agent):** apply_patch, await_terminal, configure_notebook, configure_python_environment, container-tools_get-config, create_and_run_task, create_directory, create_file, create_new_jupyter_notebook, create_new_workspace, edit_notebook_file, get-syntax-docs-mermaid, get_project_setup_info, get_python_environment_details, get_python_executable_details, get_vscode_api, install_extension, install_python_packages, kill_terminal, manage_todo_list, mcp_pylance_mcp_s_pylanceDocString, mcp_pylance_mcp_s_pylanceDocuments, mcp_pylance_mcp_s_pylanceFileSyntaxErrors, mcp_pylance_mcp_s_pylanceImports, mcp_pylance_mcp_s_pylanceInstalledTopLevelModules, mcp_pylance_mcp_s_pylanceInvokeRefactoring, mcp_pylance_mcp_s_pylancePythonEnvironments, mcp_pylance_mcp_s_pylanceRunCodeSnippet, mcp_pylance_mcp_s_pylanceSettings, mcp_pylance_mcp_s_pylanceSyntaxErrors, mcp_pylance_mcp_s_pylanceUpdatePythonEnvironment, mcp_pylance_mcp_s_pylanceWorkspaceRoots, mcp_pylance_mcp_s_pylanceWorkspaceUserFiles, mermaid-diagram-preview, mermaid-diagram-validator, notebook_install_packages, notebook_list_packages, open_simple_browser, renderMermaidDiagram, run_in_terminal, run_notebook_cell, run_vscode_command, vscode_searchExtensions_internal
+**Removed in plan (vs agent):** `apply_patch`, `await_terminal`, `configure_notebook`, `configure_python_environment`, `container-tools_get-config`, `create_and_run_task`, `create_directory`, `create_file`, `create_new_jupyter_notebook`, `create_new_workspace`, `edit_notebook_file`, `get-syntax-docs-mermaid`, `get_project_setup_info`, `get_python_environment_details`, `get_python_executable_details`, `get_vscode_api`, `install_extension`, `install_python_packages`, `kill_terminal`, `manage_todo_list`, `mcp_pylance_mcp_s_pylanceDocString`, `mcp_pylance_mcp_s_pylanceDocuments`, `mcp_pylance_mcp_s_pylanceFileSyntaxErrors`, `mcp_pylance_mcp_s_pylanceImports`, `mcp_pylance_mcp_s_pylanceInstalledTopLevelModules`, `mcp_pylance_mcp_s_pylanceInvokeRefactoring`, `mcp_pylance_mcp_s_pylancePythonEnvironments`, `mcp_pylance_mcp_s_pylanceRunCodeSnippet`, `mcp_pylance_mcp_s_pylanceSettings`, `mcp_pylance_mcp_s_pylanceSyntaxErrors`, `mcp_pylance_mcp_s_pylanceUpdatePythonEnvironment`, `mcp_pylance_mcp_s_pylanceWorkspaceRoots`, `mcp_pylance_mcp_s_pylanceWorkspaceUserFiles`, `mermaid-diagram-preview`, `mermaid-diagram-validator`, `notebook_install_packages`, `notebook_list_packages`, `open_simple_browser`, `renderMermaidDiagram`, `run_in_terminal`, `run_notebook_cell`, `run_vscode_command`, `vscode_searchExtensions_internal`
 
-**Added in plan (vs ask):** ask_questions, configure_non_python_notebook, configure_python_notebook, copilot_getNotebookSummary, fetch_webpage, file_search, get_changed_files, get_errors, get_search_view_results, get_terminal_output, github_repo, grep_search, list_code_usages, list_dir, read_file, read_notebook_cell_output, restart_notebook_kernel, runSubagent, semantic_search, terminal_last_command, terminal_selection, test_failure
+**Added in plan (vs ask):** `ask_questions`, `configure_non_python_notebook`, `configure_python_notebook`, `copilot_getNotebookSummary`, `fetch_webpage`, `file_search`, `get_changed_files`, `get_errors`, `get_search_view_results`, `get_terminal_output`, `github_repo`, `grep_search`, `list_code_usages`, `list_dir`, `read_file`, `read_notebook_cell_output`, `restart_notebook_kernel`, `runSubagent`, `semantic_search`, `terminal_last_command`, `terminal_selection`, `test_failure`
 

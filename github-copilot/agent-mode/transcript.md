@@ -4,11 +4,24 @@
 **Ended:** 2026-02-26T07:35:00.681009  
 **Requests:** 11  
 **Tokens:** 123,783 (in: 120,304 / out: 3,479)  
-**Cost:** $0.3174  
 **Models:** gpt-4o-mini-2024-07-18, gpt-5.3-codex, gpt-4o-mini  
 **Providers:** github-copilot  
 
 ---
+
+## Table of Contents
+
+- [Request #1 — gpt-4o-mini-2024-07-18 (github-copilot)](#request-1)
+- [Request #2 — gpt-5.3-codex (github-copilot)](#request-2)
+- [Request #3 — gpt-4o-mini (github-copilot)](#request-3)
+- [Request #4 — gpt-5.3-codex (github-copilot)](#request-4)
+- [Request #5 — gpt-4o-mini (github-copilot)](#request-5)
+- [Request #6 — gpt-5.3-codex (github-copilot)](#request-6)
+- [Request #7 — gpt-4o-mini (github-copilot)](#request-7)
+- [Request #8 — gpt-5.3-codex (github-copilot)](#request-8)
+- [Request #9 — gpt-5.3-codex (github-copilot)](#request-9)
+- [Request #10 — gpt-4o-mini (github-copilot)](#request-10)
+- [Request #11 — gpt-5.3-codex (github-copilot)](#request-11)
 
 ## Request #1 — gpt-4o-mini-2024-07-18 (github-copilot) — 607ms
 

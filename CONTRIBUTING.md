@@ -27,10 +27,10 @@ Want to contribute an analysis of an agent not yet covered (Cursor, Windsurf, Cl
    ├── agent-mode/
    │   ├── system-prompt.md
    │   ├── session.md
-   │   └── session/
+   │   ├── transcript.md
+   │   └── log/
    │       ├── session.json
-   │       ├── session.csv
-   │       └── session.md
+   │       └── session.csv
    └── plan-mode/               # (repeat for each mode)
        └── ...
    ```

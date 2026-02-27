@@ -4,22 +4,23 @@
 **Ended:** 2026-02-26T07:51:17.578787  
 **Wall Time:** 3m 54s  
 **Requests:** 7  
-**Tokens:** 52,990 (in: 49,861 / out: 3,129)  
-**Cost:** $0.1554  
-**Models:** gpt-4o-mini-2024-07-18, gpt-5.3-codex  
-**Providers:** github-copilot  
+**Tokens:** 52,990 (in: 49,861 / out: 3,129)
+**Models:** gpt-4o-mini-2024-07-18, gpt-5.3-codex
+**Providers:** github-copilot
+
+> Full session transcript: [transcript.md](transcript.md)
 
 ## Request Summary
 
-| # | Model | Duration | Input Tokens | Output Tokens | Cost | Stop Reason | Action |
-|---|-------|----------|-------------|--------------|------|-------------|--------|
-| 1 | gpt-4o-mini-2024-07-18 **(overhead)** | 432ms | 205 | 11 | $0.000037 | end_turn | text(52c) |
-| 2 | gpt-5.3-codex | 6.6s | 8,484 | 383 | $0.0250 | end_turn | think(37c), text(223c), `runSubagent` |
-| 3 | gpt-5.3-codex | 2.7s | 7,132 | 114 | $0.0190 | end_turn | text(203c), `list_dir`, `file_search` |
-| 4 | gpt-5.3-codex | 5.5s | 7,272 | 295 | $0.0211 | end_turn | think(42c), text(171c), `list_dir`, `list_dir` |
-| 5 | gpt-5.3-codex | 17.4s | 7,643 | 882 | $0.0279 | end_turn | think(43c), text(1885c) |
-| 6 | gpt-5.3-codex | 8.3s | 9,292 | 437 | $0.0276 | end_turn | think(36c), text(151c), `ask_questions` |
-| 7 | gpt-5.3-codex | 20.0s | 9,833 | 1,007 | $0.0347 | end_turn | think(35c), text(3007c) |
+| # | Model | Duration | Input Tokens | Output Tokens | Stop Reason | Action |
+|---|-------|----------|-------------|--------------|-------------|--------|
+| 1 | gpt-4o-mini-2024-07-18 **(overhead)** | 432ms | 205 | 11 | end_turn | text(52c) |
+| 2 | gpt-5.3-codex | 6.6s | 8,484 | 383 | end_turn | think(37c), text(223c), `runSubagent` |
+| 3 | gpt-5.3-codex | 2.7s | 7,132 | 114 | end_turn | text(203c), `list_dir`, `file_search` |
+| 4 | gpt-5.3-codex | 5.5s | 7,272 | 295 | end_turn | think(42c), text(171c), `list_dir`, `list_dir` |
+| 5 | gpt-5.3-codex | 17.4s | 7,643 | 882 | end_turn | think(43c), text(1885c) |
+| 6 | gpt-5.3-codex | 8.3s | 9,292 | 437 | end_turn | think(36c), text(151c), `ask_questions` |
+| 7 | gpt-5.3-codex | 20.0s | 9,833 | 1,007 | end_turn | think(35c), text(3007c) |
 
 ## Turn-by-Turn Trace
 

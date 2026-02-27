@@ -97,16 +97,7 @@ Claude Code uses haiku for two distinct overhead purposes:
 
 **There is no categorization or titling** — unlike Copilot, Claude Code's overhead model is never used for request routing or title generation.
 
-```
-x-anthropic-billing-header: cc_version=2.1.59.20c; cc_entrypoint=cli; cch=48ea8;
-
-You are Claude Code, Anthropic's official CLI for Claude.
-
-Extract any file paths that this command reads or modifies. For commands like "git diff" and "cat", include the paths of files being shown. Use paths verbatim -- don't add any slashes or try to resolve them. Do not try to infer paths that were not explicitly listed in the command output.
-
-IMPORTANT: Commands that do not display the contents of the files sho
-[...truncated — see system-prompt.md for full text]
-```
+See [agent-mode/system-prompt.md](agent-mode/system-prompt.md) for the full overhead prompt text.
 
 ## Mode Delta
 

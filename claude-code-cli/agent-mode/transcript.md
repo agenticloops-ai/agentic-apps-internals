@@ -4,11 +4,24 @@
 **Ended:** 2026-02-26T08:14:59.571746  
 **Requests:** 11  
 **Tokens:** 74,317 (in: 72,104 / out: 2,213)  
-**Cost:** $3.2077  
 **Models:** claude-haiku-4-5-20251001, claude-opus-4-6  
 **Providers:** anthropic  
 
 ---
+
+## Table of Contents
+
+- [Request #1 — claude-haiku-4-5-20251001 (anthropic)](#request-1)
+- [Request #2 — claude-opus-4-6 (anthropic)](#request-2)
+- [Request #3 — claude-haiku-4-5-20251001 (anthropic)](#request-3)
+- [Request #4 — claude-opus-4-6 (anthropic)](#request-4)
+- [Request #5 — claude-opus-4-6 (anthropic)](#request-5)
+- [Request #6 — claude-haiku-4-5-20251001 (anthropic)](#request-6)
+- [Request #7 — claude-opus-4-6 (anthropic)](#request-7)
+- [Request #8 — claude-opus-4-6 (anthropic)](#request-8)
+- [Request #9 — claude-haiku-4-5-20251001 (anthropic)](#request-9)
+- [Request #10 — claude-opus-4-6 (anthropic)](#request-10)
+- [Request #11 — claude-opus-4-6 (anthropic)](#request-11)
 
 ## Request #1 — claude-haiku-4-5-20251001 (anthropic) — 511ms
 

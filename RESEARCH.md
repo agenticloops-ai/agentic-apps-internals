@@ -140,11 +140,13 @@ Each captured agent produces the following output:
     │   ├── Per-request summary table (model, duration, tokens, action)
     │   └── Turn-by-turn trace (model → tool calls → stop reason)
     │
-    └── session/                  # Raw session data
+    ├── transcript.md             # Full session transcript
+    │
+    ├── result/                   # Agent output artifacts (if any)
+    │
+    └── log/                      # Raw session data
         ├── session.json          # Complete captured API traffic
-        ├── session.csv           # Flattened request summary (tabular)
-        ├── session.md            # Human-readable session report
-        └── result/               # Agent output artifacts (if any)
+        └── session.csv           # Flattened request summary (tabular)
 ```
 
 ### What's in session.json

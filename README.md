@@ -5,6 +5,8 @@
 **How AI coding agents actually work under the hood**\
 System prompts, tool architectures, session traces, and implementation patterns — captured from real agent sessions.
 
+*by [AgenticLoops.ai](https://agenticloops.ai) - for Engineers, from Engineers*
+
 [![Website](https://img.shields.io/badge/Website-agenticloops.ai-green?style=for-the-badge&logo=googlechrome&logoColor=white)](https://agenticloops.ai)
 [![Substack](https://img.shields.io/badge/Substack-Blogs_&_Newsletter-orange?style=for-the-badge&logo=substack&logoColor=white)](https://agenticloopsai.substack.com)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/company/agenticloops-ai)
@@ -57,13 +59,13 @@ New to the repo? Follow this reading path:
 
 | Agent | Type | Main Model | Overhead Model | Agent Tools | Status |
 |-------|------|-----------|----------------|-------------|--------|
-| [**Claude Code**](claude-code-cli/) | CLI | claude-opus-4-6 | claude-haiku-4-5 | 24 | ✅ Complete |
-| [**Codex CLI**](codex-cli/) | CLI | gpt-5.3-codex | — | 5 | ✅ Complete |
-| [**GitHub Copilot**](github-copilot/) | VS Code | user-selected ¹ | gpt-4o-mini | 65 | ✅ Complete |
-| **Cursor** | IDE | — | — | — | 🔜 Coming soon |
-| **Windsurf** | IDE | — | — | — | 🔜 Coming soon |
-| **Cline** | VS Code | — | — | — | 🔜 Coming soon |
-| **Aider** | CLI | — | — | — | 🔜 Coming soon |
+| [**Claude Code**](claude-code-cli/) | CLI | claude-opus-4-6 | claude-haiku-4-5 | 24 | ![new](https://img.shields.io/badge/complete-brightgreen) |
+| [**Codex CLI**](codex-cli/) | CLI | gpt-5.3-codex | — | 5 | ![new](https://img.shields.io/badge/complete-brightgreen) |
+| [**GitHub Copilot**](github-copilot/) | VS Code | user-selected ¹ | gpt-4o-mini | 65 | ![new](https://img.shields.io/badge/complete-brightgreen) |
+| **Cursor** | IDE | — | — | — | ![coming soon](https://img.shields.io/badge/coming%20soon-orange) |
+| **Windsurf** | IDE | — | — | — | ![coming soon](https://img.shields.io/badge/coming%20soon-orange) |
+| **Cline** | VS Code | — | — | — | ![coming soon](https://img.shields.io/badge/coming%20soon-orange) |
+| **Aider** | CLI | — | — | — | ![coming soon](https://img.shields.io/badge/coming%20soon-orange) |
 
 > ¹ GitHub Copilot lets users select their main model. This analysis uses gpt-5.3-codex, which was selected during our capture session. The overhead model (gpt-4o-mini) is not user-selectable. Other model choices may produce different behavior.
 
@@ -132,8 +134,10 @@ Each agent follows the same directory pattern:
 ├── TOOL-USE.md              # Complete tool catalog with full JSON schemas
 ├── agent-mode/
 │   ├── system-prompt.md     # Exact system prompt text
-│   ├── session.md           # Turn-by-turn session trace
-│   └── session/
+│   ├── user-prompt.md       # User message with injected context (skills, project, task)
+│   ├── session.md           # Session summary
+│   ├── transcript.md        # Full session transcript
+│   └── log/
 │       ├── session.json     # Raw captured API traffic
 │       └── session.csv      # Per-request metrics (tokens, cost, timing)
 └── plan-mode/               # Same structure, repeated per mode
