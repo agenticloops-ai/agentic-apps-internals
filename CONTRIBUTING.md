@@ -15,7 +15,7 @@ Found a factual error, broken link, or inconsistency? [Open an issue](https://gi
 
 Want to contribute an analysis of an agent not yet covered (Cursor, Windsurf, Cline, Aider, etc.)?
 
-1. **Capture traffic** using [AgentLens](https://github.com/agenticloops-ai/agentlens) — see `.tools/lens-run.sh` for the capture setup
+1. **Capture traffic** using [AgentLens](https://github.com/agenticloops-ai/agentlens) — see `.tools/alens` for the capture setup
 2. **Run all three modes** (or however many the agent supports) with a consistent test task
 3. **Export session data** as JSON from AgentLens
 4. **Create the directory structure:**
@@ -55,7 +55,7 @@ No build step required — this is a documentation-only repo. Just edit markdown
 
 To run a new capture session:
 ```bash
-./.tools/lens-run.sh
+./.tools/alens
 ```
 
 This launches AgentLens as a MITM proxy in a tmux session. See the [AgentLens docs](https://github.com/agenticloops-ai/agentlens) for configuration details.
