@@ -146,7 +146,7 @@ Each agent follows the same directory pattern:
 
 **Agents:** [`claude-code-cli/`](claude-code-cli/) · [`codex-cli/`](codex-cli/) · [`github-copilot/`](github-copilot/)
 
-**Other files:** [`.tools/lens-run.sh`](.tools/lens-run.sh) (capture launcher) · [`RESEARCH.md`](RESEARCH.md) (methodology) · [`CONTRIBUTING.md`](CONTRIBUTING.md)
+**Other files:** [`.tools/alens`](.tools/alens) (capture launcher) · [`RESEARCH.md`](RESEARCH.md) (methodology) · [`CONTRIBUTING.md`](CONTRIBUTING.md)
 
 ---
 

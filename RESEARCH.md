@@ -18,31 +18,46 @@ The approach is agent-agnostic. Any tool that makes LLM API calls through standa
 
 ### Using the Capture Script
 
-The [`.tools/lens-run.sh`](.tools/lens-run.sh) script automates the full capture workflow. It launches a tmux session with two panes: one running AgentLens in wait mode, the other running your agent command with proxy environment variables pre-configured.
+The [`.tools/alens`](.tools/alens) script automates the full capture workflow. It launches a tmux session with two panes: one running AgentLens in wait mode, the other running your agent command with proxy environment variables pre-configured.
 
 ```bash
 # Basic usage
-./.tools/lens-run.sh -- <agent-command>
+./.tools/alens -- <agent-command>
 
 # Examples
-./.tools/lens-run.sh -- claude -p "your prompt here"
-./.tools/lens-run.sh -- codex --model gpt-5.3-codex "your prompt here"
+./.tools/alens -- claude -p "your prompt here"
+./.tools/alens -- codex --model gpt-5.3-codex "your prompt here"
 
 # Custom output directory and session name
-./.tools/lens-run.sh -o results/my-capture -s my-session -- <agent-command>
+./.tools/alens -o results/my-capture -s my-session -- <agent-command>
+
+# Electron app (e.g. Claude Desktop, Cursor)
+./.tools/alens -E -- /Applications/Claude.app/Contents/MacOS/Claude
+
+# Transparent capture (all port 443 traffic, requires sudo)
+./.tools/alens -T -- open /Applications/NewAgent.app
+
+# Transparent capture with specific target host
+./.tools/alens -T -t api.anthropic.com -- open /Applications/CoWork.app
 ```
 
 **What the script does:**
 
-![lens-run.sh tmux session: left pane shows AgentLens proxy capturing API traffic, right pane shows Claude Code running a task](.docs/lens-run-tmux.png)
+![alens tmux session: left pane shows AgentLens proxy capturing API traffic, right pane shows Claude Code running a task](.docs/lens-run-tmux.png)
 
-1. Starts AgentLens in wait mode (`agentlens wait`), listening on `localhost:8080`
+1. Starts AgentLens in wait mode (`agentlens wait`), listening on the active interface IP
 2. Opens a second tmux pane with proxy environment variables set:
-   - `HTTP_PROXY` / `HTTPS_PROXY` → `http://127.0.0.1:8080`
+   - `HTTP_PROXY` / `HTTPS_PROXY` / `ALL_PROXY` → `http://<host>:8080`
    - `NODE_EXTRA_CA_CERTS` / `SSL_CERT_FILE` / `REQUESTS_CA_BUNDLE` / `CURL_CA_BUNDLE` → mitmproxy CA cert
 3. Runs the agent command in the proxied pane
 4. AgentLens captures all LLM API traffic passing through the proxy
 5. On completion, exports the session data to the output directory
+
+**Capture modes:**
+- **Env-var proxy** (default) — injects `HTTP_PROXY` env vars, works for CLI agents
+- **Electron proxy** (`-E`) — adds `--proxy-server` flag, works for Electron apps (Claude Desktop, Cursor)
+- **System proxy** (`-S`) — enables macOS system proxy, captures GUI apps that ignore env vars
+- **Transparent capture** (`-T`) — uses pf rules to intercept port 443 traffic at the network level (requires sudo), optionally narrowed with `-t HOST`
 
 You can then explore the captured results in the AgentLens web UI — per-request breakdown with model, tokens, duration, cost, and latency charts:
 
@@ -54,10 +69,10 @@ To analyze how an agent behaves in different modes, run a separate capture sessi
 
 ```bash
 # Agent mode
-./.tools/lens-run.sh -o results/agent -s agent -- <agent-command> --mode agent "your prompt"
+./.tools/alens -o results/agent -s agent -- <agent-command> --mode agent "your prompt"
 
 # Plan mode
-./.tools/lens-run.sh -o results/plan -s plan -- <agent-command> --mode plan "your prompt"
+./.tools/alens -o results/plan -s plan -- <agent-command> --mode plan "your prompt"
 ```
 
 The exact flags depend on the agent. The key is to use a prompt appropriate for the mode so you can observe how the agent handles that type of task.

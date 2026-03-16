@@ -1,0 +1,304 @@
+#!/usr/bin/env bash
+# alens — tmux launcher for agentlens capture
+#
+# Starts agentlens in one tmux pane and the target command in another,
+# with proxy env vars automatically injected.
+#
+# Usage:
+#   ./alens [OPTIONS] -- COMMAND [ARGS...]
+#
+# Options:
+#   -o DIR              Output directory for exported files (default: results)
+#   -s NAME             Override auto-generated session name
+#   -l LABEL            Label for the capture session
+#   -T                  Enable transparent capture (requires sudo). Captures all
+#                       port 443 traffic unless narrowed with -t.
+#   -t HOST             Add a transparent capture target host (repeatable).
+#                       Implies -T.
+#   -S                  Enable macOS system proxy (captures GUI apps that ignore
+#                       HTTP_PROXY env vars)
+#   -E                  Inject Electron --proxy-server flag into the command
+#   -H HOST             Override proxy host (default: active interface IP)
+#   -P PORT             Override proxy port (default: 8080)
+#   -h, --help          Show this help text
+#
+# Examples:
+#   # CLI agent via env vars
+#   ./alens -- claude -p "refactor auth"
+#   ./alens -- python my_agent.py
+#
+#   # Electron app (e.g. Claude Desktop, Cursor)
+#   ./alens -E -- /Applications/Claude.app/Contents/MacOS/Claude
+#
+#   # Discover what hosts an app talks to (captures all port 443)
+#   ./alens -T -- open /Applications/NewAgent.app
+#
+#   # Transparent capture with specific target (e.g. CoWork VM)
+#   ./alens -T -t api.anthropic.com -- open /Applications/CoWork.app
+#
+#   # Custom output dir and session name
+#   ./alens -o results/my-test -s my-test -- python my_agent.py
+
+set -euo pipefail
+
+usage() {
+    cat <<'EOF'
+Usage: ./alens [OPTIONS] -- COMMAND [ARGS...]
+
+Options:
+  -o DIR              Output directory for exported files (default: results)
+  -s NAME             Override auto-generated session name
+  -l LABEL            Label for the capture session
+  -T                  Enable transparent capture (requires sudo)
+  -t HOST             Add transparent capture target host (repeatable, implies -T)
+  -S                  Enable macOS system proxy
+  -E                  Inject Electron --proxy-server flag
+  -H HOST             Override proxy host (default: active interface IP)
+  -P PORT             Override proxy port (default: 8080)
+  -h, --help          Show this help text
+EOF
+}
+
+die() {
+    echo "Error: $*" >&2
+    exit 1
+}
+
+require_arg() {
+    local opt="$1"
+    local val="${2:-}"
+    if [[ -z "$val" ]]; then
+        die "missing value for ${opt}"
+    fi
+}
+
+# ---------------------------------------------------------------------------
+# Parse arguments
+# ---------------------------------------------------------------------------
+
+OUTPUT="results"
+SESSION_NAME=""
+LABEL=""
+TMUX_SESSION="agentlens"
+TRANSPARENT_TARGETS=()
+SYSTEM_PROXY=false
+ELECTRON_PROXY=false
+PROXY_HOST_OVERRIDE=""
+PROXY_PORT="8080"
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -o)
+            require_arg "$1" "${2:-}"
+            OUTPUT="$2"
+            shift 2
+            ;;
+        -s)
+            require_arg "$1" "${2:-}"
+            SESSION_NAME="$2"
+            shift 2
+            ;;
+        -l)
+            require_arg "$1" "${2:-}"
+            LABEL="$2"
+            shift 2
+            ;;
+        -T)
+            TRANSPARENT=true
+            shift
+            ;;
+        -t)
+            require_arg "$1" "${2:-}"
+            TRANSPARENT_TARGETS+=("$2")
+            TRANSPARENT=true
+            shift 2
+            ;;
+        -S)
+            SYSTEM_PROXY=true
+            shift
+            ;;
+        -E)
+            ELECTRON_PROXY=true
+            shift
+            ;;
+        -H)
+            require_arg "$1" "${2:-}"
+            PROXY_HOST_OVERRIDE="$2"
+            shift 2
+            ;;
+        -P)
+            require_arg "$1" "${2:-}"
+            PROXY_PORT="$2"
+            shift 2
+            ;;
+        -h|--help)
+            usage
+            exit 0
+            ;;
+        --)
+            shift
+            break
+            ;;
+        *)
+            die "unknown option: $1"
+            ;;
+    esac
+done
+
+if [[ $# -eq 0 ]]; then
+    usage
+    die "no command specified after --"
+fi
+
+if ! [[ "$PROXY_PORT" =~ ^[0-9]+$ ]] || ((PROXY_PORT < 1 || PROXY_PORT > 65535)); then
+    die "proxy port must be an integer between 1 and 65535"
+fi
+
+TRANSPARENT="${TRANSPARENT:-false}"
+
+# ---------------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------------
+
+quote() { printf '%s' "'${1//\'/\'\\\'\'}'"; }
+
+detect_default_interface() {
+    route -n get default 2>/dev/null | awk '/interface:/{print $2}'
+}
+
+detect_proxy_host() {
+    if [[ -n "$PROXY_HOST_OVERRIDE" ]]; then
+        echo "$PROXY_HOST_OVERRIDE"
+        return
+    fi
+
+    local route_if host_ip
+    route_if=$(detect_default_interface)
+    if [[ -n "$route_if" ]]; then
+        host_ip=$(ipconfig getifaddr "$route_if" 2>/dev/null || true)
+        if [[ -z "$host_ip" ]]; then
+            host_ip=$(ifconfig "$route_if" 2>/dev/null | awk '/inet /{print $2; exit}')
+        fi
+    fi
+
+    if [[ -n "${host_ip:-}" ]]; then
+        echo "$host_ip"
+    else
+        echo "127.0.0.1"
+    fi
+}
+
+# ---------------------------------------------------------------------------
+# System proxy helpers (macOS networksetup)
+# ---------------------------------------------------------------------------
+
+detect_network_service() {
+    local route_if svc
+    route_if=$(detect_default_interface)
+    if [[ -z "$route_if" ]]; then
+        echo "Wi-Fi"
+        return
+    fi
+
+    svc=$(networksetup -listallhardwareports 2>/dev/null | awk -v dev="$route_if" '
+        /^Hardware Port:/ { name = substr($0, index($0,":")+2) }
+        /^Device:/ { if ($2 == dev) { print name; exit } }
+    ')
+
+    if [[ -n "$svc" ]]; then
+        echo "$svc"
+    else
+        echo "Wi-Fi"
+    fi
+}
+
+enable_system_proxy() {
+    local svc="$1"
+    echo "[alens] Enabling system proxy on '$svc' -> ${PROXY_HOST}:${PROXY_PORT}"
+    networksetup -setwebproxy "$svc" "$PROXY_HOST" "$PROXY_PORT" off
+    networksetup -setsecurewebproxy "$svc" "$PROXY_HOST" "$PROXY_PORT" off
+    networksetup -setwebproxystate "$svc" on
+    networksetup -setsecurewebproxystate "$svc" on
+}
+
+disable_system_proxy() {
+    local svc="$1"
+    echo "[alens] Disabling system proxy on '$svc'"
+    networksetup -setwebproxystate "$svc" off
+    networksetup -setsecurewebproxystate "$svc" off
+}
+
+# ---------------------------------------------------------------------------
+# Build commands
+# ---------------------------------------------------------------------------
+
+CA="${HOME}/.mitmproxy/mitmproxy-ca-cert.pem"
+PROXY_HOST="$(detect_proxy_host)"
+PROXY="http://${PROXY_HOST}:${PROXY_PORT}"
+
+if [[ "$TRANSPARENT" == true ]]; then
+    # Transparent capture via pf rules (requires sudo)
+    WAIT_CMD="sudo -E uv run agentlens capture --mode transparent --host 127.0.0.1 --proxy-port ${PROXY_PORT} --no-open"
+    for target in "${TRANSPARENT_TARGETS[@]}"; do
+        WAIT_CMD="${WAIT_CMD} --target-host $(quote "$target")"
+    done
+    if [[ -n "$LABEL" ]]; then
+        WAIT_CMD="${WAIT_CMD} --label $(quote "$LABEL")"
+    fi
+else
+    WAIT_CMD="uv run agentlens wait --host 0.0.0.0 --proxy-port ${PROXY_PORT} --output $(quote "$OUTPUT") --no-open"
+fi
+
+if [[ -n "$SESSION_NAME" ]]; then
+    WAIT_CMD="${WAIT_CMD} --session-name $(quote "$SESSION_NAME")"
+fi
+
+USER_CMD=""
+for arg in "$@"; do
+    USER_CMD="${USER_CMD:+$USER_CMD }$(quote "$arg")"
+done
+
+if [[ "$ELECTRON_PROXY" == true ]]; then
+    USER_CMD="${USER_CMD} --proxy-server=$(quote "http://${PROXY_HOST}:${PROXY_PORT}")"
+fi
+
+if [[ "$TRANSPARENT" == true ]]; then
+    # Transparent mode — no proxy env vars needed, traffic is intercepted at network level
+    RUN_CMD="sleep 2 && ${USER_CMD}"
+else
+    RUN_CMD="sleep 2 && \
+HTTP_PROXY=$(quote "$PROXY") HTTPS_PROXY=$(quote "$PROXY") \
+http_proxy=$(quote "$PROXY") https_proxy=$(quote "$PROXY") \
+ALL_PROXY=$(quote "$PROXY") all_proxy=$(quote "$PROXY") \
+NODE_EXTRA_CA_CERTS=$(quote "$CA") SSL_CERT_FILE=$(quote "$CA") \
+NODE_TLS_REJECT_UNAUTHORIZED=0 \
+GLOBAL_AGENT_HTTP_PROXY=$(quote "$PROXY") \
+REQUESTS_CA_BUNDLE=$(quote "$CA") CURL_CA_BUNDLE=$(quote "$CA") \
+${USER_CMD}"
+fi
+
+# ---------------------------------------------------------------------------
+# Launch tmux
+# ---------------------------------------------------------------------------
+
+NETWORK_SVC=""
+if [[ "$SYSTEM_PROXY" == true ]]; then
+    NETWORK_SVC=$(detect_network_service)
+    enable_system_proxy "$NETWORK_SVC"
+fi
+
+if [[ "$TRANSPARENT" == true ]]; then
+    echo "[alens] Refreshing sudo credentials for transparent capture"
+    sudo -v
+fi
+
+CLEANUP_CMD=""
+if [[ "$SYSTEM_PROXY" == true ]]; then
+    CLEANUP_CMD="networksetup -setwebproxystate $(quote "$NETWORK_SVC") off; networksetup -setsecurewebproxystate $(quote "$NETWORK_SVC") off; echo '[alens] System proxy disabled';"
+fi
+
+tmux kill-session -t "$TMUX_SESSION" 2>/dev/null || true
+tmux new-session -d -s "$TMUX_SESSION" "$WAIT_CMD; ${CLEANUP_CMD} exec ${SHELL:-bash}"
+tmux split-window -h -t "$TMUX_SESSION" "$RUN_CMD"
+tmux select-pane -t "$TMUX_SESSION:0.1"
+exec tmux attach -t "$TMUX_SESSION"
