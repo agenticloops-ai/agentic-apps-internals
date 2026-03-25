@@ -1,0 +1,9 @@
+timestamp,provider,model,duration_ms,ttft_ms,status,stop_reason,input_tokens,output_tokens,total_tokens,cost_usd,is_streaming,has_tools,has_thinking,preview_text
+2026-03-25T06:14:12.453443,openai,gpt-5.3-codex,3300.471067428589,307.9988956451416,success,end_turn,2404,153,2557,0.00754,True,False,False,"Generate a title for this conversation:
+"
+2026-03-25T06:14:18.900298,openai,gpt-5.3-codex,9748.868703842163,436.445951461792,success,end_turn,8983,272,9255,0.0251775,True,True,False,"Create a plan to implement minimal agentic loop in Python using Anthropic API with a run bash tool
+and human confirmation before executing scripts."
+2026-03-25T06:14:23.068453,openai,gpt-5.3-codex,3845.8731174468994,486.30404472351074,success,end_turn,12351,120,12471,0.0320775,True,True,False,"Create a plan to implement minimal agentic loop in Python using Anthropic API with a run bash tool
+and human confirmation before executing scripts."
+2026-03-25T06:15:00.213092,openai,gpt-5.3-codex,36848.61397743225,452.98194885253906,success,end_turn,17377,1765,19142,0.0610925,True,True,False,"Create a plan to implement minimal agentic loop in Python using Anthropic API with a run bash tool
+and human confirmation before executing scripts."

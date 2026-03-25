@@ -47,7 +47,7 @@ This repository contains captured API traffic, decoded system prompts, complete 
 
 New to the repo? Follow this reading path:
 
-1. **Pick an agent** — Choose [Claude Code](claude-code-cli/), [Codex CLI](codex-cli/), or [Copilot](github-copilot/) and read its README
+1. **Pick an agent** — Choose [Claude Code](claude-code-cli/), [Codex CLI](codex-cli/), [Copilot](github-copilot/), or [OpenCode](opencode/) and read its README
 2. **System Prompt** — Read the agent's `system-prompt.md` to see the exact instructions it receives
 3. **Prompt Engineering** — Read `PROMPT-ENGINEERING.md` for how the prompt is structured and how it changes between modes
 4. **Tool Catalog** — Browse `TOOL-USE.md` for the full tool definitions with JSON schemas
@@ -62,6 +62,7 @@ New to the repo? Follow this reading path:
 | [**Claude Code**](claude-code-cli/) | CLI | claude-opus-4-6 | claude-haiku-4-5 | 24 | ![new](https://img.shields.io/badge/complete-brightgreen) |
 | [**Codex CLI**](codex-cli/) | CLI | gpt-5.3-codex | — | 5 | ![new](https://img.shields.io/badge/complete-brightgreen) |
 | [**GitHub Copilot**](github-copilot/) | VS Code | user-selected ¹ | gpt-4o-mini | 65 | ![new](https://img.shields.io/badge/complete-brightgreen) |
+| [**OpenCode**](opencode/) | CLI | gpt-5.3-codex | — | 10 | ![new](https://img.shields.io/badge/complete-brightgreen) |
 | **Cursor** | IDE | — | — | — | ![coming soon](https://img.shields.io/badge/coming%20soon-orange) |
 | **Windsurf** | IDE | — | — | — | ![coming soon](https://img.shields.io/badge/coming%20soon-orange) |
 | **Cline** | VS Code | — | — | — | ![coming soon](https://img.shields.io/badge/coming%20soon-orange) |
