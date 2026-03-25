@@ -299,6 +299,7 @@ fi
 
 tmux kill-session -t "$TMUX_SESSION" 2>/dev/null || true
 tmux new-session -d -s "$TMUX_SESSION" "$WAIT_CMD; ${CLEANUP_CMD} exec ${SHELL:-bash}"
+FIRST_WIN=$(tmux list-windows -t "$TMUX_SESSION" -F '#{window_index}' | head -1)
 tmux split-window -h -t "$TMUX_SESSION" "$RUN_CMD"
-tmux select-pane -t "$TMUX_SESSION:0.1"
+tmux select-pane -t "$TMUX_SESSION:${FIRST_WIN}.1"
 exec tmux attach -t "$TMUX_SESSION"
