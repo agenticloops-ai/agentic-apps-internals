@@ -13,7 +13,6 @@
 | Main system prompt size | 2,345 words | 4,332 words | +85% |
 | Tools always loaded | 24 | 8 | −67% |
 | Tools deferred (loadable) | 0 | 117 | new |
-| MCP integration | none captured | 92 tools / 10 servers | new |
 | Skills available | 3 | 17 | +5× |
 | System-prompt blocks | 1 | 4 (cache-friendly split) | new structure |
 | Distinct prompt types | 2 (main + path-extract) | 4 (main + monitor + 2 haiku) | +2 |
@@ -58,7 +57,7 @@ v2.1.59 preloaded all 24 tool schemas in every opus request. v2.1.126 preloads 8
 
 **Always loaded (8):** `Agent`, `Bash`, `Edit`, `Read`, `ScheduleWakeup`, `Skill`, `ToolSearch`, `Write`
 
-**Deferred (117):** all `Task*`, `Team*`, `Cron*`, `WebFetch`/`WebSearch`, `NotebookEdit`, `EnterPlanMode`/`ExitPlanMode`, `AskUserQuestion`, `EnterWorktree`, `Monitor`, `SendMessage`, MCP tools (Canva, Figma, Gmail, Calendar, Drive, tldraw, Excalidraw, Miro, context7, Mermaid)…
+**Deferred (117):** all `Task*`, `Team*`, `Cron*`, `WebFetch`/`WebSearch`, `NotebookEdit`, `EnterPlanMode`/`ExitPlanMode`, `AskUserQuestion`, `EnterWorktree`, `Monitor`, `SendMessage`, MCP tools
 
 The deferred-tool catalog ships in a `<system-reminder>` at the top of every initial user message. To use one, the model calls `ToolSearch(query="select:<name>")` to load schemas. See [TOOL-USE.md](TOOL-USE.md).
 
