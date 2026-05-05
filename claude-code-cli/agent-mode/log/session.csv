@@ -1,41 +1,20 @@
 timestamp,provider,model,duration_ms,ttft_ms,status,stop_reason,input_tokens,output_tokens,total_tokens,cost_usd,is_streaming,has_tools,has_thinking,preview_text
-2026-02-26T08:12:57.343350,anthropic,claude-haiku-4-5-20251001,511.1711025238037,,success,max_tokens,8,1,9,1.04e-05,False,False,False,quota
-2026-02-26T08:13:28.170708,anthropic,claude-opus-4-6,5507.828950881958,2465.934991836548,success,tool_use,3,224,227,0.102438,True,True,True,"<system-reminder>
-The following skills are available for use with the Skill tool:
-
-- keybindings-help: Use when the user wants to customize keyboard shortcuts, rebind keys, add chord bindings, or modi"
-2026-02-26T08:13:39.885584,anthropic,claude-haiku-4-5-20251001,491.318941116333,380.0370693206787,success,end_turn,343,32,375,0.0004024,True,False,False,"Command: ls /Users/alx/Development/agenticloops-ai/agentlens/samples/claude/
-Output: 2026-02-26T00-07-38
+2026-05-04T15:58:36.979159,anthropic,claude-haiku-4-5-20251001,723.1040000915527,,success,max_tokens,8,1,9,1.04e-05,False,False,False,quota
+2026-05-04T15:58:52.070937,anthropic,claude-haiku-4-5-20251001,1002.1390914916992,785.4161262512207,success,end_turn,376,20,396,0.0003808,True,False,False,"Implement minimal agentic loop in Python using Anthropic API with a run bash tool
+and human confirmation before executing scripts. Implement as a standalone script `agent-loop.py`"
+2026-05-04T15:58:53.947355,anthropic,claude-opus-4-7,2805.586099624634,1486.4239692687988,success,tool_use,6,163,169,0.25245675,True,True,True,"<system-reminder>
+The following deferred tools are now available via ToolSearch. Their schemas are NOT loaded — calling them directly will fail with InputValidationError. Use ToolSearch with query ""se"
+2026-05-04T15:58:55.718042,anthropic,claude-opus-4-7,1796.436071395874,,success,stop_sequence,77,7,84,0.01847475,False,False,False,"<transcript>
 "
-2026-02-26T08:13:46.330027,anthropic,claude-opus-4-6,6908.450603485107,5178.75075340271,success,tool_use,3,89,92,1.28192925,True,True,True,"<system-reminder>
-The following skills are available for use with the Skill tool:
-
-- keybindings-help: Use when the user wants to customize keyboard shortcuts, rebind keys, add chord bindings, or modi"
-2026-02-26T08:13:49.852116,anthropic,claude-opus-4-6,3431.7541122436523,2367.7570819854736,success,tool_use,1,111,112,0.14859975,True,True,True,"<system-reminder>
-The following skills are available for use with the Skill tool:
-
-- keybindings-help: Use when the user wants to customize keyboard shortcuts, rebind keys, add chord bindings, or modi"
-2026-02-26T08:13:50.452284,anthropic,claude-haiku-4-5-20251001,491.20020866394043,371.6573715209961,success,end_turn,354,32,386,0.00041119999999999997,True,False,False,"Command: ls /Users/alx/Development/agenticloops-ai/agentlens/samples/claude/2026-02-26T00-07-38/
-Output: plan.csv
-plan.json
-plan.md
+2026-05-04T15:59:02.253106,anthropic,claude-opus-4-7,6474.1621017456055,4031.179904937744,success,tool_use,6,178,184,3.2693895,True,True,True,"<system-reminder>
+The following deferred tools are now available via ToolSearch. Their schemas are NOT loaded — calling them directly will fail with InputValidationError. Use ToolSearch with query ""se"
+2026-05-04T15:59:21.321995,anthropic,claude-opus-4-7,16104.60615158081,2768.666982650757,success,tool_use,1,1465,1466,0.41189475,True,True,True,"<system-reminder>
+The following deferred tools are now available via ToolSearch. Their schemas are NOT loaded — calling them directly will fail with InputValidationError. Use ToolSearch with query ""se"
+2026-05-04T15:59:26.620391,anthropic,claude-opus-4-7,5196.3441371917725,3976.3059616088867,success,tool_use,1,197,198,0.340965,True,True,True,"<system-reminder>
+The following deferred tools are now available via ToolSearch. Their schemas are NOT loaded — calling them directly will fail with InputValidationError. Use ToolSearch with query ""se"
+2026-05-04T15:59:28.271990,anthropic,claude-opus-4-7,1643.0072784423828,,success,stop_sequence,77,7,84,0.04574625,False,False,False,"<transcript>
 "
-2026-02-26T08:14:11.339393,anthropic,claude-opus-4-6,21345.54386138916,2077.2390365600586,success,tool_use,1,1371,1372,0.2428695,True,True,True,"<system-reminder>
-The following skills are available for use with the Skill tool:
-
-- keybindings-help: Use when the user wants to customize keyboard shortcuts, rebind keys, add chord bindings, or modi"
-2026-02-26T08:14:25.552055,anthropic,claude-opus-4-6,2865.366220474243,2128.0882358551025,success,tool_use,1,102,103,0.17195175,True,True,True,"<system-reminder>
-The following skills are available for use with the Skill tool:
-
-- keybindings-help: Use when the user wants to customize keyboard shortcuts, rebind keys, add chord bindings, or modi"
-2026-02-26T08:14:33.394516,anthropic,claude-haiku-4-5-20251001,503.9410591125488,394.5779800415039,success,end_turn,338,32,370,0.00039840000000000003,True,False,False,"Command: chmod +x /Users/alx/Development/agenticloops-ai/agentlens/samples/claude/agent-loop.py
-Output: 
-"
-2026-02-26T08:14:39.964807,anthropic,claude-opus-4-6,7036.219120025635,2146.137237548828,success,end_turn,1,213,214,0.1582335,True,True,True,"<system-reminder>
-The following skills are available for use with the Skill tool:
-
-- keybindings-help: Use when the user wants to customize keyboard shortcuts, rebind keys, add chord bindings, or modi"
-2026-02-26T08:14:42.827780,anthropic,claude-opus-4-6,2771.437644958496,2697.720766067505,success,end_turn,71051,6,71057,1.100433,True,True,True,"<system-reminder>
-The following skills are available for use with the Skill tool:
-
-- keybindings-help: Use when the user wants to customize keyboard shortcuts, rebind keys, add chord bindings, or modi"
+2026-05-04T15:59:34.019315,anthropic,claude-opus-4-7,5381.939172744751,2026.8268585205078,success,end_turn,1,248,249,0.32252625,True,True,True,"<system-reminder>
+The following deferred tools are now available via ToolSearch. Their schemas are NOT loaded — calling them directly will fail with InputValidationError. Use ToolSearch with query ""se"
+2026-05-04T15:59:36.141409,anthropic,claude-opus-4-7,2103.8169860839844,1967.4067497253418,success,end_turn,425,7,432,0.31176525,True,True,True,"<system-reminder>
+The following deferred tools are now available via ToolSearch. Their schemas are NOT loaded — calling them directly will fail with InputValidationError. Use ToolSearch with query ""se"

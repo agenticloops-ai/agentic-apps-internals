@@ -30,7 +30,6 @@ This repository contains captured API traffic, decoded system prompts, complete 
 > **Interesting things you'll discover:**
 >
 > 📖 [The exact system prompt that tells Claude Code to "avoid over-engineering"](claude-code-cli/agent-mode/system-prompt.md) — and the detailed rules that follow it\
-> 🔄 [Why Copilot sends 8 overhead requests before your task even starts](github-copilot/PROMPT-ENGINEERING.md) — the multi-model routing pipeline\
 > ⚖️ [5 tools vs 65 tools — same task, radically different approaches](codex-cli/TOOL-USE.md) — Codex CLI's minimalism vs Copilot's comprehensive toolset\
 > 🧠 [Codex CLI's explicit engineering values: "Clarity, Pragmatism, Rigor"](codex-cli/agent-mode/system-prompt.md) — personality encoded directly in the system prompt
 
@@ -59,7 +58,7 @@ New to the repo? Follow this reading path:
 
 | Agent | Type | Main Model | Overhead Model | Agent Tools | Status |
 |-------|------|-----------|----------------|-------------|--------|
-| [**Claude Code**](claude-code-cli/) | CLI | claude-opus-4-6 | claude-haiku-4-5 | 24 | ![new](https://img.shields.io/badge/complete-brightgreen) |
+| [**Claude Code**](claude-code-cli/) | CLI | claude-opus-4-7 (1M) | claude-haiku-4-5 | 8 + 117 deferred | ![v2.1.126](https://img.shields.io/badge/v2.1.126-brightgreen) |
 | [**Codex CLI**](codex-cli/) | CLI | gpt-5.3-codex | — | 5 | ![new](https://img.shields.io/badge/complete-brightgreen) |
 | [**GitHub Copilot**](github-copilot/) | VS Code | user-selected ¹ | gpt-4o-mini | 65 | ![new](https://img.shields.io/badge/complete-brightgreen) |
 | [**OpenCode**](opencode/) | CLI | gpt-5.3-codex | — | 10 | ![new](https://img.shields.io/badge/complete-brightgreen) |
@@ -145,9 +144,6 @@ Each agent follows the same directory pattern:
     └── ...
 ```
 
-**Agents:** [`claude-code-cli/`](claude-code-cli/) · [`codex-cli/`](codex-cli/) · [`github-copilot/`](github-copilot/)
-
-**Other files:** [`.tools/alens`](.tools/alens) (capture launcher) · [`RESEARCH.md`](RESEARCH.md) (methodology) · [`CONTRIBUTING.md`](CONTRIBUTING.md)
 
 ---
 

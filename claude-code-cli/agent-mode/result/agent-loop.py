@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
-"""Minimal agentic loop with a bash tool and human confirmation."""
+"""Minimal agentic loop using the Anthropic API with a bash tool.
 
+Usage:
+    export ANTHROPIC_API_KEY=...
+    python agent-loop.py "list the files in the current directory"
+"""
 from __future__ import annotations
 
 import subprocess
@@ -8,29 +12,27 @@ import sys
 
 import anthropic
 
-MODEL = "claude-sonnet-4-6"
-MAX_TOKENS = 4096
-
-SYSTEM_PROMPT = """\
-You are a helpful assistant with access to a bash tool. \
-Use it to answer questions, explore the filesystem, run scripts, and accomplish tasks. \
-Always explain what you intend to do before invoking a command.\
-"""
+MODEL = "claude-opus-4-7"
+SYSTEM = (
+    "You are a helpful assistant with access to a `run_bash` tool that executes "
+    "shell commands on the user's machine. Use it when needed to answer the user's "
+    "request. Be concise."
+)
 
 TOOLS = [
     {
         "name": "run_bash",
         "description": (
-            "Execute a bash command and return its stdout and stderr. "
-            "The command runs in the user's shell. Use this for file operations, "
-            "running scripts, installing packages, querying system info, etc."
+            "Execute a bash command on the user's local machine and return its "
+            "stdout, stderr, and exit code. The user will be asked to confirm "
+            "before the command runs."
         ),
         "input_schema": {
             "type": "object",
             "properties": {
                 "command": {
                     "type": "string",
-                    "description": "The bash command to execute",
+                    "description": "The bash command to execute.",
                 },
             },
             "required": ["command"],
@@ -39,118 +41,91 @@ TOOLS = [
 ]
 
 
-def run_bash(command: str) -> str:
-    """Execute a bash command and return combined output."""
-    result = subprocess.run(
-        ["bash", "-c", command],
-        capture_output=True,
-        text=True,
-        timeout=120,
-    )
-    output_parts = []
-    if result.stdout:
-        output_parts.append(result.stdout)
-    if result.stderr:
-        output_parts.append(f"[stderr]\n{result.stderr}")
-    output_parts.append(f"[exit code: {result.returncode}]")
-    return "\n".join(output_parts)
-
-
 def confirm(command: str) -> bool:
-    """Ask the user to confirm before running a command."""
-    print(f"\n{'─' * 60}")
-    print(f"  Tool call: run_bash")
-    print(f"  Command:   {command}")
-    print(f"{'─' * 60}")
-    while True:
-        answer = input("  Run this command? [y/n]: ").strip().lower()
-        if answer in ("y", "yes"):
-            return True
-        if answer in ("n", "no"):
-            return False
+    print(f"\n\033[33m[agent wants to run]\033[0m {command}")
+    answer = input("Approve? [y/N] ").strip().lower()
+    return answer in ("y", "yes")
 
 
-def execute_tool(name: str, tool_input: dict) -> str:
-    """Dispatch a tool call, gated by human confirmation."""
-    if name != "run_bash":
-        return f"Error: unknown tool '{name}'"
-
-    command = tool_input["command"]
+def run_bash(command: str) -> tuple[str, bool]:
     if not confirm(command):
-        return "User declined to run this command."
-
+        return ("Command rejected by user.", True)
     try:
-        return run_bash(command)
+        result = subprocess.run(
+            command,
+            shell=True,
+            capture_output=True,
+            text=True,
+            timeout=120,
+        )
     except subprocess.TimeoutExpired:
-        return "Error: command timed out after 120 seconds."
-    except Exception as e:
-        return f"Error: {e}"
+        return ("Command timed out after 120s.", True)
+    output = (
+        f"exit_code: {result.returncode}\n"
+        f"stdout:\n{result.stdout}\n"
+        f"stderr:\n{result.stderr}"
+    )
+    return (output, result.returncode != 0)
 
 
-def agent_loop(user_message: str) -> None:
-    """Run the agentic loop until Claude stops calling tools."""
+def main() -> None:
+    if len(sys.argv) < 2:
+        print("Usage: agent-loop.py <prompt>", file=sys.stderr)
+        sys.exit(1)
+    user_prompt = " ".join(sys.argv[1:])
+
     client = anthropic.Anthropic()
-    messages: list[dict] = [{"role": "user", "content": user_message}]
+    messages = [{"role": "user", "content": user_prompt}]
 
     while True:
-        print("\n... thinking", end="", flush=True)
-
         with client.messages.stream(
             model=MODEL,
-            max_tokens=MAX_TOKENS,
-            system=SYSTEM_PROMPT,
+            max_tokens=16000,
+            system=SYSTEM,
             tools=TOOLS,
             messages=messages,
         ) as stream:
-            for text in stream.text_stream:
-                print(text, end="", flush=True)
+            for event in stream:
+                if (
+                    event.type == "content_block_start"
+                    and event.content_block.type == "tool_use"
+                ):
+                    print(f"\n\033[36m[tool_use]\033[0m {event.content_block.name}")
+                elif event.type == "content_block_delta":
+                    if event.delta.type == "text_delta":
+                        print(event.delta.text, end="", flush=True)
             response = stream.get_final_message()
 
-        print()
+        print()  # newline after streaming text
 
         if response.stop_reason == "end_turn":
-            break
+            return
 
-        # Extract tool_use blocks
-        tool_use_blocks = [b for b in response.content if b.type == "tool_use"]
-        if not tool_use_blocks:
-            break
+        if response.stop_reason != "tool_use":
+            print(f"\n[stopped: {response.stop_reason}]", file=sys.stderr)
+            return
 
-        # Append assistant response (preserves tool_use blocks)
         messages.append({"role": "assistant", "content": response.content})
 
-        # Execute each tool and collect results
         tool_results = []
-        for tool in tool_use_blocks:
-            result = execute_tool(tool.name, tool.input)
-            print(f"\n{result}")
+        for block in response.content:
+            if block.type != "tool_use":
+                continue
+            if block.name == "run_bash":
+                output, is_error = run_bash(block.input["command"])
+                print(f"\033[90m{output}\033[0m")
+            else:
+                output, is_error = (f"Unknown tool: {block.name}", True)
             tool_results.append(
                 {
                     "type": "tool_result",
-                    "tool_use_id": tool.id,
-                    "content": result,
+                    "tool_use_id": block.id,
+                    "content": output,
+                    "is_error": is_error,
                 }
             )
 
         messages.append({"role": "user", "content": tool_results})
-
-
-def main() -> None:
-    if len(sys.argv) > 1:
-        user_message = " ".join(sys.argv[1:])
-        agent_loop(user_message)
-        return
-
-    print("Agent Loop (type 'quit' to exit)\n")
-    while True:
-        try:
-            user_message = input("> ").strip()
-        except (EOFError, KeyboardInterrupt):
-            print()
-            break
-        if not user_message or user_message.lower() in ("quit", "exit"):
-            break
-        agent_loop(user_message)
 
 
 if __name__ == "__main__":
